@@ -37,6 +37,16 @@ public final class Constants {
 			public static final Translation2d backLeft = new Translation2d(-dist, -dist);
 			public static final Translation2d backRight = new Translation2d(dist, -dist);
 		}
+
+		public static final class TargetPIDvalues {
+			public static final double p = 0;
+			public static final double i = 0;
+			public static final double d = 0;
+		}
+
+		public static final class TargetConstants {
+			public static final double xCenter = 0;
+		}
 	}
 	public static class OperatorConstants {
 		public static final int kDriverControllerPort = 0;

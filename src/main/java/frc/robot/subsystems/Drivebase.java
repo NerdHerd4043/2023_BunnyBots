@@ -13,11 +13,15 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants.ModuleLocations;
 import frc.robot.Constants.DriveConstants.SwerveModules;
+
 public class Drivebase extends SubsystemBase {
+
   private SwerveModule frontLeft = new SwerveModule(SwerveModules.frontLeft);
   private SwerveModule frontRight = new SwerveModule(SwerveModules.frontRight);
   private SwerveModule backLeft = new SwerveModule(SwerveModules.backLeft);
   private SwerveModule backRight = new SwerveModule(SwerveModules.backRight);
+
+  private boolean targetLock = false;
 
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
     ModuleLocations.frontLeft,
@@ -40,6 +44,14 @@ public class Drivebase extends SubsystemBase {
     this.frontRight.drive(moduleStates[1]);
     this.backLeft.drive(moduleStates[2]);
     this.backRight.drive(moduleStates[3]);
+  }
+
+  public void targetingToggle(){
+    targetLock = !targetLock;
+  }
+
+  public boolean isTargeting(){
+    return targetLock;
   }
 
   @Override
