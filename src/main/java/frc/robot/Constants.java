@@ -46,6 +46,7 @@ public final class Constants {
 
 		public static final class TargetConstants {
 			public static final double xCenter = 0;
+			public static final int medianFilter = 5;
 		}
 	}
 	public static class OperatorConstants {

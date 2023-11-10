@@ -6,6 +6,7 @@ package frc.robot.commands.driveCommands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivebase;
 
@@ -14,12 +15,14 @@ public class TargetDrive extends CommandBase {
   private final Drivebase drivebase;
   private final DoubleSupplier speedX;
   private final DoubleSupplier speedY;
+  private final DoubleSupplier xPose;
 
   /** Creates a new Drive. */
-  public TargetDrive(Drivebase drivebase, DoubleSupplier speedX, DoubleSupplier speedY) {
+  public TargetDrive(Drivebase drivebase, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier xPose) {
     this.drivebase = drivebase;
     this.speedX = speedX;
     this.speedY = speedY;
+    this.xPose = xPose;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.drivebase);
@@ -32,13 +35,13 @@ public class TargetDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // new TargetPID(drivebase, speedX, speedY, xPose);
+    new TargetPID(drivebase, speedX, speedY, xPose);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //turn off limelight
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
   }
 
   // Returns true when the command should end.
