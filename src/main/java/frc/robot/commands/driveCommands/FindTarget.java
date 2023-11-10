@@ -6,6 +6,8 @@ package frc.robot.commands.driveCommands;
 
 import java.util.function.DoubleSupplier;
 
+import org.json.JSONObject;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivebase;
@@ -49,7 +51,10 @@ public class FindTarget extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    String raw = NetworkTableInstance.getDefault().getTable("limelight").getEntry("json").getString("{}");
+    // var obj = new JSONObject(raw);
+    System.out.println(raw);
     return false;
-    // return blueAlliance == NetworkTableInstance.getDefault().getTable("limelight").getEntry("json").stuff();
+    // return blueAlliance != NetworkTableInstance.getDefault().getTable("limelight").getEntry("json").stuff();
   }
 }
