@@ -4,11 +4,16 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.driveCommands.Drive;
-import frc.robot.commands.driveCommands.TargetDrive;
 import frc.robot.commands.driveCommands.TargetLock;
 import frc.robot.subsystems.Drivebase;
+
+import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.math.filter.MedianFilter;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -26,6 +31,15 @@ public class RobotContainer {
   private final Drivebase drivebase = new Drivebase();
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private static CommandXboxController driveStick = new CommandXboxController(0);
+
+  private MedianFilter filter = new MedianFilter(DriveConstants.TargetConstants.medianFilter);
+
+  private boolean blueAlliance = false;
+
+  NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+
+  private final DoubleSupplier xPose =  
+    () -> filter.calculate(limelightTable.getEntry("tx").getDouble(0));  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -56,7 +70,9 @@ public class RobotContainer {
           drivebase,
           () -> driveStick.getLeftX(),
           () -> driveStick.getLeftY(),
-          () -> driveStick.getRightX()));
+          () -> driveStick.getRightX(),
+          xPose,
+          blueAlliance));
   }
 
   /**

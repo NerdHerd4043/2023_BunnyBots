@@ -17,12 +17,12 @@ public class TargetLock extends SequentialCommandGroup {
   private Drivebase drivebase;
 
   /** Creates a new TargetLock. */
-  public TargetLock(Drivebase drivebase, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot) {
+  public TargetLock(Drivebase drivebase, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot, DoubleSupplier xPose, boolean blueAlliance) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new FindTarget(drivebase, speedX, speedY, rot),
-      new TargetDrive(drivebase, speedX, speedY)
+      new FindTarget(drivebase, speedX, speedY, rot, blueAlliance),
+      new TargetDrive(drivebase, speedX, speedY, xPose)
     );
   }
 }
