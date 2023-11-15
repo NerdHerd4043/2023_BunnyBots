@@ -12,17 +12,15 @@ import frc.robot.subsystems.Drivebase;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TargetLock extends SequentialCommandGroup {
-
-  private Drivebase drivebase;
+public class TargetingMode extends SequentialCommandGroup {
 
   /** Creates a new TargetLock. */
-  public TargetLock(Drivebase drivebase, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot, DoubleSupplier xPose, boolean blueAlliance) {
+  public TargetingMode(Drivebase drivebase, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot, DoubleSupplier xPose, boolean onBlueAlliance) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new FindTarget(drivebase, speedX, speedY, rot, blueAlliance),
-      new TargetDrive(drivebase, speedX, speedY, xPose)
+      new FindTarget(drivebase, speedX, speedY, rot, onBlueAlliance),
+      new LockedOn(drivebase, speedX, speedY, xPose)
     );
   }
 }

@@ -10,7 +10,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivebase;
 
-public class TargetDrive extends CommandBase {
+public class LockedOn extends CommandBase {
 
   private final Drivebase drivebase;
   private final DoubleSupplier speedX;
@@ -18,7 +18,7 @@ public class TargetDrive extends CommandBase {
   private final DoubleSupplier xPose;
 
   /** Creates a new Drive. */
-  public TargetDrive(Drivebase drivebase, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier xPose) {
+  public LockedOn(Drivebase drivebase, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier xPose) {
     this.drivebase = drivebase;
     this.speedX = speedX;
     this.speedY = speedY;
@@ -41,7 +41,7 @@ public class TargetDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("").setNumber(1);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
   }
 
   // Returns true when the command should end.
