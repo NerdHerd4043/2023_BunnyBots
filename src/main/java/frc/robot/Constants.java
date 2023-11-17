@@ -19,8 +19,8 @@ public final class Constants {
 	public static final class DriveConstants {
 		public static final class SwervePID {
 			public static final double p = 1;
-			public static final double i = 1;
-			public static final double d = 1;
+			public static final double i = 0;
+			public static final double d = 0.1;
 		}
 
 		public static final class SwerveModules {
@@ -31,7 +31,7 @@ public final class Constants {
 		}
 
 		public static final class ModuleLocations {
-			private static final double dist = 10.325;
+			public static final double dist = 10.325;
 			public static final Translation2d frontLeft = new Translation2d(-dist, dist);
 			public static final Translation2d frontRight = new Translation2d(dist, dist);
 			public static final Translation2d backLeft = new Translation2d(-dist, -dist);

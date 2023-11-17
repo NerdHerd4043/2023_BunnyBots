@@ -14,6 +14,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -34,7 +35,9 @@ public class RobotContainer {
 
   private MedianFilter filter = new MedianFilter(DriveConstants.TargetConstants.medianFilter);
 
-  private boolean blueAlliance = false;
+  SendableChooser<Boolean> alliance = new SendableChooser<>();
+  private boolean blue = true;
+  private boolean red = false;
 
   NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
@@ -43,6 +46,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    alliance.addOption("Blue Alliance", blue);
+    alliance.addOption("Red Alliance", red);
 
     drivebase.setDefaultCommand(
       new Drive(
@@ -72,7 +77,7 @@ public class RobotContainer {
           () -> driveStick.getLeftY(),
           () -> driveStick.getRightX(),
           xPose,
-          blueAlliance));
+          alliance.getSelected()));
   }
 
   /**
