@@ -26,8 +26,8 @@ public final class Constants {
 		public static final class SwerveModules {
 			public static final SwerveModuleConfig frontLeft = new SwerveModuleConfig(1, 11, 21);
 			public static final SwerveModuleConfig frontRight = new SwerveModuleConfig(2, 12, 22);
-			public static final SwerveModuleConfig backLeft = new SwerveModuleConfig(3, 13, 24);
-			public static final SwerveModuleConfig backRight = new SwerveModuleConfig(4, 14, 23);
+			public static final SwerveModuleConfig backRight = new SwerveModuleConfig(3, 13, 23);
+			public static final SwerveModuleConfig backLeft = new SwerveModuleConfig(4, 14, 24);
 		}
 
 		public static final class ModuleLocations {
@@ -50,8 +50,8 @@ public final class Constants {
 		}
 	}
 	public static class ShooterConstants {
-		public static final int flywheelID = 12;
-		public static final int hoodID = 13;
+		public static final int flywheelID = 5;
+		public static final int hoodID = 6;
 		public static final int hoodEncoderID = 1;
 
 		public static final class FlywheelPIDs {
@@ -65,6 +65,9 @@ public final class Constants {
 			public static final double i = 0;
 			public static final double d = 0;
 		}
+	}
+	public static class IndexerConstants {
+		public static final int IndexMotorID = 7;
 	}
 	public static class OperatorConstants {
 		public static final int kDriverControllerPort = 0;
