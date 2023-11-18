@@ -52,16 +52,15 @@ public final class Constants {
 	public static class ShooterConstants {
 		public static final int flywheelID = 12;
 		public static final int hoodID = 13;
-		public static final int flywheelEncoderID = 0;
 		public static final int hoodEncoderID = 1;
 
-		public static final class FlywheelPID {
+		public static final class FlywheelPIDs {
 			public static final double p = 0;
 			public static final double i = 0;
 			public static final double d = 0;
 		}
 
-		public static final class HoodPID {
+		public static final class HoodPIDs {
 			public static final double p = 0;
 			public static final double i = 0;
 			public static final double d = 0;
