@@ -24,10 +24,10 @@ public final class Constants {
 		}
 
 		public static final class SwerveModules {
-			public static final SwerveModuleConfig frontLeft = new SwerveModuleConfig(0, 1, 2);
-			public static final SwerveModuleConfig frontRight = new SwerveModuleConfig(3, 4, 5);
-			public static final SwerveModuleConfig backLeft = new SwerveModuleConfig(6, 7, 8);
-			public static final SwerveModuleConfig backRight = new SwerveModuleConfig(9, 10, 11);
+			public static final SwerveModuleConfig frontLeft = new SwerveModuleConfig(1, 11, 21);
+			public static final SwerveModuleConfig frontRight = new SwerveModuleConfig(2, 12, 22);
+			public static final SwerveModuleConfig backLeft = new SwerveModuleConfig(3, 13, 24);
+			public static final SwerveModuleConfig backRight = new SwerveModuleConfig(4, 14, 23);
 		}
 
 		public static final class ModuleLocations {
