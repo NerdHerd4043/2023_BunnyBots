@@ -29,7 +29,10 @@ public class DistanceShoot extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    hood.enable();
+    flywheel.enable();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -43,8 +46,8 @@ public class DistanceShoot extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    hood.stop();
-    flywheel.stop();
+    hood.disable();
+    flywheel.disable();
   }
 
   // Returns true when the command should end.
