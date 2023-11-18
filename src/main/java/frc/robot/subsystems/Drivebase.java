@@ -22,7 +22,7 @@ public class Drivebase extends SubsystemBase {
   private final double MAX_VELOCITY = NEO_FREE_SPEED * DRIVE_REDUCTION * WHEEL_DIAMETER * Math.PI;
   private final double MAX_ANGULAR_VELOCITY = MAX_VELOCITY / (ModuleLocations.dist / Math.sqrt(2.0));
 
-  private SwerveModule frontLeft = new SwerveModule(SwerveModules.frontLeft);
+  // private SwerveModule frontLeft = new SwerveModule(SwerveModules.frontLeft);
   private SwerveModule frontRight = new SwerveModule(SwerveModules.frontRight);
   private SwerveModule backLeft = new SwerveModule(SwerveModules.backLeft);
   private SwerveModule backRight = new SwerveModule(SwerveModules.backRight);
@@ -47,7 +47,7 @@ public class Drivebase extends SubsystemBase {
 
     SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, MAX_VELOCITY);
 
-    this.frontLeft.drive(moduleStates[0]);
+    // this.frontLeft.drive(moduleStates[0]);
     this.frontRight.drive(moduleStates[1]);
     this.backLeft.drive(moduleStates[2]);
     this.backRight.drive(moduleStates[3]);
