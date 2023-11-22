@@ -18,9 +18,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 public final class Constants {
 	public static final class DriveConstants {
 		public static final class SwervePID {
-			public static final double p = 1;
+			public static final double p = 0.1;
 			public static final double i = 0;
-			public static final double d = 0.1;
+			public static final double d = 0;
 		}
 
 		public static final class SwerveModules {

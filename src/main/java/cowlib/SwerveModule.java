@@ -20,25 +20,35 @@ public class SwerveModule {
 	private PIDController pidController;
 	private CANCoder encoder;
 
-	public SwerveModule(int angleMotor, int speedMotor, int encoder) {
+	private double maxVelocity;
+	private double maxVoltage;
+
+	public SwerveModule(int angleMotor, int speedMotor, int encoder, double maxVelocity, double maxVoltage) {
 		this.angleMotor = new CANSparkMax(angleMotor, MotorType.kBrushless);
 		this.speedMotor = new CANSparkMax(speedMotor, MotorType.kBrushless);
 		this.pidController = new PIDController(SwervePID.p, SwervePID.i, SwervePID.d);
 		this.encoder = new CANCoder(encoder);
 
 		this.pidController.enableContinuousInput(0, 360);
+
+		this.maxVelocity = maxVelocity;
+		this.maxVoltage = maxVoltage;
 	}
 
-	public SwerveModule(SwerveModuleConfig config) {
-		this(config.angleMotorId, config.driveMotorId, config.encoderId);
+	public SwerveModule(SwerveModuleConfig config, double maxVelocity, double maxVoltage) {
+		this(config.angleMotorId, config.driveMotorId, config.encoderId, maxVelocity, maxVoltage);
 	}
 
 	public void drive(double speed, double angle) {
-		speedMotor.set(speed);
+		speedMotor.setVoltage(speed);
 		angleMotor.set(MathUtil.clamp(pidController.calculate(encoder.getAbsolutePosition(), angle), -1, 1));
 	}
 
 	public void drive(SwerveModuleState state) {
-		this.drive(state.speedMetersPerSecond, state.angle.getDegrees());
+		this.drive(state.speedMetersPerSecond / maxVelocity * maxVoltage, state.angle.getDegrees());
+	}
+
+	public double getEncoder() {
+		return encoder.getAbsolutePosition();
 	}
 }

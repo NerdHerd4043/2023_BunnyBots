@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants.ModuleLocations;
 import frc.robot.Constants.DriveConstants.SwerveModules;
@@ -22,10 +23,12 @@ public class Drivebase extends SubsystemBase {
   private final double MAX_VELOCITY = NEO_FREE_SPEED * DRIVE_REDUCTION * WHEEL_DIAMETER * Math.PI;
   private final double MAX_ANGULAR_VELOCITY = MAX_VELOCITY / (ModuleLocations.dist / Math.sqrt(2.0));
 
-  // private SwerveModule frontLeft = new SwerveModule(SwerveModules.frontLeft);
-  private SwerveModule frontRight = new SwerveModule(SwerveModules.frontRight);
-  private SwerveModule backLeft = new SwerveModule(SwerveModules.backLeft);
-  private SwerveModule backRight = new SwerveModule(SwerveModules.backRight);
+  private final double MAX_VOLTAGE = 12;
+
+  // private SwerveModule frontLeft = new SwerveModule(SwerveModules.frontLeft, MAX_VELOCITY, MAX_VOLTAGE);
+  private SwerveModule frontRight = new SwerveModule(SwerveModules.frontRight, MAX_VELOCITY, MAX_VOLTAGE);
+  private SwerveModule backLeft = new SwerveModule(SwerveModules.backLeft, MAX_VELOCITY, MAX_VOLTAGE);
+  private SwerveModule backRight = new SwerveModule(SwerveModules.backRight, MAX_VELOCITY, MAX_VOLTAGE);
 
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
     ModuleLocations.frontLeft,
@@ -47,6 +50,11 @@ public class Drivebase extends SubsystemBase {
 
     SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, MAX_VELOCITY);
 
+    // SmartDashboard.putNumber("FL Angle", moduleStates[0].angle.getDegrees());
+    SmartDashboard.putNumber("FR Angle", moduleStates[1].angle.getDegrees());
+    SmartDashboard.putNumber("BR Angle", moduleStates[2].angle.getDegrees());
+    SmartDashboard.putNumber("BL Angle", moduleStates[3].angle.getDegrees());
+
     // this.frontLeft.drive(moduleStates[0]);
     this.frontRight.drive(moduleStates[1]);
     this.backLeft.drive(moduleStates[2]);
@@ -55,6 +63,10 @@ public class Drivebase extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // SmartDashboard.putNumber("FL Encoder", frontLeft.getEncoder());
+    SmartDashboard.putNumber("FR Encoder", frontRight.getEncoder());
+    SmartDashboard.putNumber("BR Encoder", backRight.getEncoder());
+    SmartDashboard.putNumber("BL Encoder", backLeft.getEncoder());
     // This method will be called once per scheduler run
   }
 }
