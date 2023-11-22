@@ -25,7 +25,7 @@ public class Drivebase extends SubsystemBase {
 
   private final double MAX_VOLTAGE = 12;
 
-  // private SwerveModule frontLeft = new SwerveModule(SwerveModules.frontLeft, MAX_VELOCITY, MAX_VOLTAGE);
+  private SwerveModule frontLeft = new SwerveModule(SwerveModules.frontLeft, MAX_VELOCITY, MAX_VOLTAGE);
   private SwerveModule frontRight = new SwerveModule(SwerveModules.frontRight, MAX_VELOCITY, MAX_VOLTAGE);
   private SwerveModule backLeft = new SwerveModule(SwerveModules.backLeft, MAX_VELOCITY, MAX_VOLTAGE);
   private SwerveModule backRight = new SwerveModule(SwerveModules.backRight, MAX_VELOCITY, MAX_VOLTAGE);
@@ -50,20 +50,33 @@ public class Drivebase extends SubsystemBase {
 
     SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, MAX_VELOCITY);
 
-    // SmartDashboard.putNumber("FL Angle", moduleStates[0].angle.getDegrees());
-    SmartDashboard.putNumber("FR Angle", moduleStates[1].angle.getDegrees());
-    SmartDashboard.putNumber("BR Angle", moduleStates[2].angle.getDegrees());
-    SmartDashboard.putNumber("BL Angle", moduleStates[3].angle.getDegrees());
+    SmartDashboard.putNumber("FL Target Angle", moduleStates[0].angle.getDegrees());
+    SmartDashboard.putNumber("FR Target Angle", moduleStates[1].angle.getDegrees());
+    SmartDashboard.putNumber("BR Target Angle", moduleStates[2].angle.getDegrees());
+    SmartDashboard.putNumber("BL Target Angle", moduleStates[3].angle.getDegrees());
 
-    // this.frontLeft.drive(moduleStates[0]);
+    SmartDashboard.putNumber("FL Target Speed", moduleStates[0].speedMetersPerSecond);
+    SmartDashboard.putNumber("FR Target Speed", moduleStates[1].speedMetersPerSecond);
+    SmartDashboard.putNumber("BR Target Speed", moduleStates[2].speedMetersPerSecond);
+    SmartDashboard.putNumber("BL Target Speed", moduleStates[3].speedMetersPerSecond);
+
+    this.frontLeft.drive(moduleStates[0]);
     this.frontRight.drive(moduleStates[1]);
     this.backLeft.drive(moduleStates[2]);
     this.backRight.drive(moduleStates[3]);
   }
 
+  public double getMaxVelocity() {
+    return MAX_VELOCITY;
+  }
+
+  public double getMaxAngleVelocity() {
+    return MAX_ANGULAR_VELOCITY;
+  }
+
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber("FL Encoder", frontLeft.getEncoder());
+    SmartDashboard.putNumber("FL Encoder", frontLeft.getEncoder());
     SmartDashboard.putNumber("FR Encoder", frontRight.getEncoder());
     SmartDashboard.putNumber("BR Encoder", backRight.getEncoder());
     SmartDashboard.putNumber("BL Encoder", backLeft.getEncoder());

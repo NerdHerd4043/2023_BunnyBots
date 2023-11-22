@@ -6,7 +6,9 @@ package frc.robot.commands.driveCommands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.Drivebase;
 
 public class Drive extends CommandBase {
@@ -34,7 +36,15 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivebase.drive(speedX.getAsDouble(), speedY.getAsDouble(), rot.getAsDouble());
+    var x = speedX.getAsDouble();
+    var y = speedY.getAsDouble();
+    var r = rot.getAsDouble();
+
+    SmartDashboard.putNumber("Controller X", x);
+    SmartDashboard.putNumber("Controller Y", y);
+    SmartDashboard.putNumber("Controller R", r);
+
+    drivebase.drive(x, y, r);
   }
 
   // Called once the command ends or is interrupted.
