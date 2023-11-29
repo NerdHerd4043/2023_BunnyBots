@@ -51,7 +51,7 @@ public final class Constants {
 			public static final int medianFilter = 5;
 		}
 	}
-	public static class ShooterConstants {
+	public static final class ShooterConstants {
 		public static final int flywheelID = 5;
 		public static final int hoodID = 6;
 		public static final int hoodEncoderID = 1;
@@ -67,11 +67,16 @@ public final class Constants {
 			public static final double i = 0;
 			public static final double d = 0;
 		}
+
+		public static final class HoodPositions {
+			public static final double retracted = 14.0; // TODO get retracted value
+			public static final double extended = 36.0; // TODO get extended value
+		}
 	}
-	public static class IndexerConstants {
+	public static final class IndexerConstants {
 		public static final int IndexMotorID = 7;
 	}
-	public static class OperatorConstants {
+	public static final class OperatorConstants {
 		public static final int kDriverControllerPort = 0;
 	}
 }

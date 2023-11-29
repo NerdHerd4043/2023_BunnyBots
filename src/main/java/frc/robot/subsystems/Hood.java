@@ -24,7 +24,7 @@ public class Hood extends PIDSubsystem {
         // The PIDController used by the subsystem
         new PIDController(HoodPIDs.p, HoodPIDs.i, HoodPIDs.d));
 
-    hoodMotor.setIdleMode(IdleMode.kBrake); 
+    hoodMotor.setIdleMode(IdleMode.kBrake);
   }
 
   @Override
@@ -45,9 +45,13 @@ public class Hood extends PIDSubsystem {
     hoodMotor.set(0);
   }
 
+  private double map(double t) {
+    return (t - HoodPositions.retracted) / (HoodPositions.extended - HoodPositions.retracted);
+  }
+
   @Override
   public double getMeasurement() {
     // Return the process variable measurement here
-    return hoodEncoder.getAbsolutePosition();
+    return map(hoodEncoder.getAbsolutePosition());
   }
 }
