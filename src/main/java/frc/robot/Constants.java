@@ -18,11 +18,12 @@ import edu.wpi.first.math.geometry.Translation2d;
 public final class Constants {
 	public static final class DriveConstants {
 		public static final double deadband = 0.2;
+		public static final int currentLimit = 30;
 
 		public static final class SwervePID {
-			public static final double p = 0.00003;
+			public static final double p = 0.1; //0.27
 			public static final double i = 0;
-			public static final double d = 0.000001;
+			public static final double d = 0.001; //0.0007;
 		}
 
 		public static final class SwerveModules {
