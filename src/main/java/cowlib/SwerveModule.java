@@ -42,7 +42,7 @@ public class SwerveModule {
 	public void drive(double speed, double angle) {
 		speedMotor.setVoltage(speed * (this.inverted ? -1 : 1));
 		// angleMotor.set(MathUtil.clamp(pidController.calculate(encoder.getAbsolutePosition(), angle), -1, 1));
-		angleMotor.setVoltage(1 - (pidController.calculate(encoder.getAbsolutePosition(), angle)));
+		angleMotor.setVoltage(1 - (pidController.calculate(this.getEncoder(), angle)));
 	}
 
 	public void drive(SwerveModuleState state) {
