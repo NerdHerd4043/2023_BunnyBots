@@ -21,27 +21,28 @@ public class SwerveModule {
 	private CANSparkMax speedMotor;
 	private PIDController pidController;
 	private CANCoder encoder;
+	private boolean inverted;
 
-	public SwerveModule(int angleMotor, int speedMotor, int encoder) {
+	public SwerveModule(int angleMotor, int speedMotor, int encoder, boolean drive_inverted) {
 		this.angleMotor = new CANSparkMax(angleMotor, MotorType.kBrushless);
 		this.speedMotor = new CANSparkMax(speedMotor, MotorType.kBrushless);
 		this.pidController = new PIDController(SwervePID.p, SwervePID.i, SwervePID.d);
 		this.encoder = new CANCoder(encoder);
+		this.inverted = drive_inverted;
 
 		this.pidController.enableContinuousInput(-180, 180);
 	}
 	
 	public SwerveModule(SwerveModuleConfig config, double maxVelocity, double maxVoltage) {
-		this(config.angleMotorId, config.driveMotorId, config.encoderId);
+		this(config.angleMotorId, config.driveMotorId, config.encoderId, config.drive_inverted);
 		angleMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
 		speedMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
 	}
 
 	public void drive(double speed, double angle) {
-		speedMotor.setVoltage(speed);
+		speedMotor.setVoltage(speed * (this.inverted ? -1 : 1));
 		// angleMotor.set(MathUtil.clamp(pidController.calculate(encoder.getAbsolutePosition(), angle), -1, 1));
 		angleMotor.setVoltage(1 - (pidController.calculate(encoder.getAbsolutePosition(), angle)));
-		SmartDashboard.putNumber("aaaaaahhhhh", 1 - (pidController.calculate(encoder.getAbsolutePosition(), angle)));
 	}
 
 	public void drive(SwerveModuleState state) {
