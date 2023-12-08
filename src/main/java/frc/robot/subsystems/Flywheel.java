@@ -10,12 +10,14 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.ShooterConstants.*;
 
 public class Flywheel extends PIDSubsystem {
-  private final CANSparkMax flywheelMotor = new CANSparkMax(ShooterConstants.flywheelID, MotorType.kBrushless);
+  private final CANSparkMax flywheelMotor1 = new CANSparkMax(ShooterConstants.flywheel1ID, MotorType.kBrushless);
+  private final CANSparkMax flywheelMotor2 = new CANSparkMax(ShooterConstants.flywheel2ID, MotorType.kBrushless);
   private RelativeEncoder encoder;
 
   /** Creates a new Flywheel. */
@@ -24,23 +26,30 @@ public class Flywheel extends PIDSubsystem {
         // The PIDController used by the subsystem
         new PIDController(FlywheelPIDs.p, FlywheelPIDs.i, FlywheelPIDs.d));
 
-    flywheelMotor.restoreFactoryDefaults();
-    flywheelMotor.setIdleMode(IdleMode.kBrake);
-    encoder = flywheelMotor.getEncoder();
+        flywheelMotor1.restoreFactoryDefaults();
+        flywheelMotor2.restoreFactoryDefaults();
+        flywheelMotor1.setIdleMode(IdleMode.kBrake);
+        flywheelMotor2.setIdleMode(IdleMode.kBrake);
+        flywheelMotor2.follow(flywheelMotor1);
+        flywheelMotor1.setInverted(false);
+        flywheelMotor2.setInverted(true);
+
+        encoder = flywheelMotor1.getEncoder();
   }
 
   @Override
   public void useOutput(double output, double setpoint) {
     // Use the output here
-    flywheelMotor.setVoltage(output);
+    SmartDashboard.putNumber("Flywheel Output", output);
+    flywheelMotor1.setVoltage(output);
   }
 
-  public void manualShoot(double speed) {
-    flywheelMotor.set(speed);
+  public void flywheelSpeed(double speed) {
+    flywheelMotor1.set(speed);
   }
 
   public void stop() {
-    flywheelMotor.set(0);
+    flywheelMotor1.set(0);
   }
 
   @Override

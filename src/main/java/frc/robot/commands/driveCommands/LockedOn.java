@@ -6,6 +6,8 @@ package frc.robot.commands.driveCommands;
 
 import java.util.function.DoubleSupplier;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivebase;
@@ -13,13 +15,15 @@ import frc.robot.subsystems.Drivebase;
 public class LockedOn extends CommandBase {
 
   private final Drivebase drivebase;
+  private final AHRS gyro;
   private final DoubleSupplier speedX;
   private final DoubleSupplier speedY;
   private final DoubleSupplier xPose;
 
   /** Creates a new Drive. */
-  public LockedOn(Drivebase drivebase, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier xPose) {
+  public LockedOn(Drivebase drivebase, AHRS gyro, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier xPose) {
     this.drivebase = drivebase;
+    this.gyro = gyro;
     this.speedX = speedX;
     this.speedY = speedY;
     this.xPose = xPose;
@@ -35,7 +39,7 @@ public class LockedOn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    new TargetPID(drivebase, speedX, speedY, xPose);
+    new TargetPID(drivebase, gyro, speedX, speedY, xPose);
   }
 
   // Called once the command ends or is interrupted.

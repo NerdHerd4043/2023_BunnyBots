@@ -8,14 +8,21 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.driveCommands.Drive;
 import frc.robot.commands.driveCommands.TargetingMode;
 import frc.robot.subsystems.Drivebase;
+import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Hood;
+import frc.robot.subsystems.Indexer;
 
 import java.util.function.DoubleSupplier;
+
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -32,6 +39,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   private final Drivebase drivebase = new Drivebase();
+  private final Flywheel flywheel = new Flywheel();
+  private final Hood hood = new Hood();
+  private final Indexer indexer = new Indexer();
+
+  private final AHRS gyro = new AHRS();
+
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private static CommandXboxController driveStick = new CommandXboxController(0);
 
@@ -59,9 +72,18 @@ public class RobotContainer {
     drivebase.setDefaultCommand(
         new Drive(
             drivebase,
-            () -> deadband(driveStick.getLeftX(), DriveConstants.deadband) * drivebase.getMaxVelocity() * 0.5,
-            () -> deadband(driveStick.getLeftY(), DriveConstants.deadband) * drivebase.getMaxVelocity() * 0.5,
-            () -> deadband(driveStick.getRightX(), DriveConstants.deadband) * drivebase.getMaxAngleVelocity() * 0.5));
+            gyro,
+            () -> deadband(-driveStick.getLeftX(), DriveConstants.deadband) * drivebase.getMaxVelocity() * 0.75,
+            () -> deadband(driveStick.getLeftY(), DriveConstants.deadband) * drivebase.getMaxVelocity() * 0.75,
+            () -> deadband(driveStick.getRightX(), DriveConstants.deadband) * drivebase.getMaxAngleVelocity() * 0.75)
+            );
+
+    hood.setDefaultCommand(
+      new RunCommand(
+        () -> hood.adjust(
+          driveStick.getRightTriggerAxis() - driveStick.getLeftTriggerAxis()),
+          hood)
+    );
 
     // Configure the trigger bindings
     configureBindings();
@@ -73,6 +95,10 @@ public class RobotContainer {
     } else {
       return input;
     }
+  }
+
+  public void resetGyro() {
+    gyro.reset();
   }
 
   /**
@@ -90,6 +116,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    driveStick.a().onTrue(new RunCommand(() -> flywheel.flywheelSpeed(0.1), flywheel));
+    // driveStick.a().onTrue(new RunCommand(() -> flywheel.setSetpoint(0.1), flywheel));
+    driveStick.b().onTrue(new RunCommand(() -> flywheel.flywheelSpeed(0), flywheel));
+    driveStick.y().onTrue(new InstantCommand(gyro::reset));
+
     // driveStick.b().toggleOnTrue(
     // new TargetingMode(
     // drivebase,

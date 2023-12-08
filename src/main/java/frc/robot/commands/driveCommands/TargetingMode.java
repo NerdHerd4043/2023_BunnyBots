@@ -6,6 +6,8 @@ package frc.robot.commands.driveCommands;
 
 import java.util.function.DoubleSupplier;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Drivebase;
 
@@ -15,12 +17,12 @@ import frc.robot.subsystems.Drivebase;
 public class TargetingMode extends SequentialCommandGroup {
 
   /** Creates a new TargetLock. */
-  public TargetingMode(Drivebase drivebase, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot, DoubleSupplier xPose, boolean onBlueAlliance) {
+  public TargetingMode(Drivebase drivebase, AHRS gyro, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot, DoubleSupplier xPose, boolean onBlueAlliance) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new FindTarget(drivebase, speedX, speedY, rot, onBlueAlliance),
-      new LockedOn(drivebase, speedX, speedY, xPose)
+      new FindTarget(drivebase, gyro, speedX, speedY, rot, onBlueAlliance),
+      new LockedOn(drivebase, gyro, speedX, speedY, xPose)
     );
   }
 }

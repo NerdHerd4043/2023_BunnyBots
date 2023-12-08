@@ -6,9 +6,10 @@ package frc.robot.commands.driveCommands;
 
 import java.util.function.DoubleSupplier;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.Drivebase;
 
 public class Drive extends CommandBase {
@@ -17,13 +18,15 @@ public class Drive extends CommandBase {
   private final DoubleSupplier speedX;
   private final DoubleSupplier speedY;
   private final DoubleSupplier rot;
+  private final AHRS gyro;
 
   /** Creates a new Drive. */
-  public Drive(Drivebase drivebase, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot) {
+  public Drive(Drivebase drivebase, AHRS gyro, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot) {
     this.drivebase = drivebase;
     this.speedX = speedX;
     this.speedY = speedY;
     this.rot = rot;
+    this.gyro = gyro;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.drivebase);
@@ -40,11 +43,16 @@ public class Drive extends CommandBase {
     var y = speedY.getAsDouble();
     var r = rot.getAsDouble();
 
-    SmartDashboard.putNumber("Controller X", x);
-    SmartDashboard.putNumber("Controller Y", y);
-    SmartDashboard.putNumber("Controller R", r);
+    // SmartDashboard.putNumber("Controller X", x);
+    // SmartDashboard.putNumber("Controller Y", y);
+    // SmartDashboard.putNumber("Controller R", r);
 
-    drivebase.drive(x, y, r);
+    SmartDashboard.putNumber("Pitch", gyro.getPitch());
+    SmartDashboard.putNumber("Roll", gyro.getRoll());
+    SmartDashboard.putNumber("Yaw", gyro.getYaw());
+
+    drivebase.robotOrientedDrive(x, y, r);
+    // drivebase.fieldOrientedDrive(x, y, r, gyro.getYaw());
   }
 
   // Called once the command ends or is interrupted.

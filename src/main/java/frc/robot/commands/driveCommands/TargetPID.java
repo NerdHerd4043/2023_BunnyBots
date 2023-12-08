@@ -6,6 +6,8 @@ package frc.robot.commands.driveCommands;
 
 import java.util.function.DoubleSupplier;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants.DriveConstants.*;
@@ -17,9 +19,10 @@ import frc.robot.subsystems.Drivebase;
 public class TargetPID extends PIDCommand {
 
   private final Drivebase drivebase;
+  private final AHRS gyro;
 
   /** Creates a new TargetPID. */
-  public TargetPID(Drivebase drivebase, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier xPose) {
+  public TargetPID(Drivebase drivebase, AHRS gyro, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier xPose) {
     super(
         // The controller that the command will use
         new PIDController(TargetPIDvalues.p, TargetPIDvalues.i, TargetPIDvalues.d),
@@ -29,10 +32,11 @@ public class TargetPID extends PIDCommand {
         () -> TargetConstants.xCenter,
         // This uses the output
         output -> {
-          drivebase.drive(speedX.getAsDouble(), speedY.getAsDouble(), output);
+          drivebase.fieldOrientedDrive(speedX.getAsDouble(), speedY.getAsDouble(), output, gyro.getYaw());
         });
 
     this.drivebase = drivebase;
+    this.gyro = gyro;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.drivebase);
     // Configure additional PID options by calling `getController` here.

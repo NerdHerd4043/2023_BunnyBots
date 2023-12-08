@@ -10,6 +10,8 @@ import java.util.function.DoubleSupplier;
 
 import org.json.JSONObject;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivebase;
@@ -17,14 +19,16 @@ import frc.robot.subsystems.Drivebase;
 public class FindTarget extends CommandBase {
 
   private Drivebase drivebase;
+  private final AHRS gyro;
   private final DoubleSupplier speedX;
   private final DoubleSupplier speedY;
   private final DoubleSupplier rot;
   private boolean onBlueAlliance;
 
   /** Creates a new FindTarget. */
-  public FindTarget(Drivebase drivebase, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot, boolean onBlueAlliance) {
+  public FindTarget(Drivebase drivebase, AHRS gyro, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot, boolean onBlueAlliance) {
     this.drivebase = drivebase;
+    this.gyro = gyro;
     this.speedX = speedX;
     this.speedY = speedY;
     this.rot = rot;
@@ -42,7 +46,7 @@ public class FindTarget extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivebase.drive(speedX.getAsDouble(), speedY.getAsDouble(), rot.getAsDouble());
+    drivebase.fieldOrientedDrive(speedX.getAsDouble(), speedY.getAsDouble(), rot.getAsDouble(), gyro.getYaw());
   }
 
   // Called once the command ends or is interrupted.

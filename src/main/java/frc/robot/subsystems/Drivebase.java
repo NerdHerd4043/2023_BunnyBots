@@ -40,9 +40,14 @@ public class Drivebase extends SubsystemBase {
   /** Creates a new Drivebase. */
   public Drivebase() {}
   
-  public void drive(double speedX, double speedY, double rot) {
-    // ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speedX, speedY, rot, Rotation2d.fromDegrees(angle));
-    this.drive(new ChassisSpeeds(speedX, speedY, rot));
+  public void fieldOrientedDrive(double speedX, double speedY, double rot, double angle) {
+    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speedX, speedY, rot, Rotation2d.fromDegrees(angle));
+    this.drive(speeds);
+  }
+
+  public void robotOrientedDrive(double speedX, double speedY, double rot) {
+    ChassisSpeeds speeds = new ChassisSpeeds(speedX, speedY, rot);
+    this.drive(speeds);
   }
 
   public void drive(ChassisSpeeds speeds) {
@@ -55,10 +60,10 @@ public class Drivebase extends SubsystemBase {
     SmartDashboard.putNumber("BR Target Angle", moduleStates[2].angle.getDegrees());
     SmartDashboard.putNumber("BL Target Angle", moduleStates[3].angle.getDegrees());
 
-    SmartDashboard.putNumber("FL Target Speed", moduleStates[0].speedMetersPerSecond);
-    SmartDashboard.putNumber("FR Target Speed", moduleStates[1].speedMetersPerSecond);
-    SmartDashboard.putNumber("BR Target Speed", moduleStates[2].speedMetersPerSecond);
-    SmartDashboard.putNumber("BL Target Speed", moduleStates[3].speedMetersPerSecond);
+    // SmartDashboard.putNumber("FL Target Speed", moduleStates[0].speedMetersPerSecond);
+    // SmartDashboard.putNumber("FR Target Speed", moduleStates[1].speedMetersPerSecond);
+    // SmartDashboard.putNumber("BR Target Speed", moduleStates[2].speedMetersPerSecond);
+    // SmartDashboard.putNumber("BL Target Speed", moduleStates[3].speedMetersPerSecond);
 
     this.frontLeft.drive(moduleStates[0]);
     this.frontRight.drive(moduleStates[1]);
