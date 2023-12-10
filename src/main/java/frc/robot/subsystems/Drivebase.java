@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.SparkMaxPIDController;
-
 import cowlib.SwerveModule;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -79,12 +77,24 @@ public class Drivebase extends SubsystemBase {
     return MAX_ANGULAR_VELOCITY;
   }
 
+  public void resetEncoders() {
+    frontLeft.resetEncoder();
+    frontRight.resetEncoder();
+    backLeft.resetEncoder();
+    backRight.resetEncoder();
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("FL Encoder", frontLeft.getEncoder());
     SmartDashboard.putNumber("FR Encoder", frontRight.getEncoder());
     SmartDashboard.putNumber("BR Encoder", backRight.getEncoder());
     SmartDashboard.putNumber("BL Encoder", backLeft.getEncoder());
+
+    SmartDashboard.putNumber("FL Relative Encoder", frontLeft.getRelativeEncoder());
+    SmartDashboard.putNumber("FR Relative Encoder", frontRight.getRelativeEncoder());
+    SmartDashboard.putNumber("BR Relative Encoder", backRight.getRelativeEncoder());
+    SmartDashboard.putNumber("BL Relative Encoder", backLeft.getRelativeEncoder());
     // This method will be called once per scheduler run
   }
 }

@@ -30,9 +30,9 @@ public class Flywheel extends PIDSubsystem {
         flywheelMotor2.restoreFactoryDefaults();
         flywheelMotor1.setIdleMode(IdleMode.kBrake);
         flywheelMotor2.setIdleMode(IdleMode.kBrake);
-        flywheelMotor2.follow(flywheelMotor1);
-        flywheelMotor1.setInverted(false);
-        flywheelMotor2.setInverted(true);
+        // flywheelMotor2.follow(flywheelMotor1);
+        // flywheelMotor1.setInverted(false);
+        // flywheelMotor2.setInverted(true);
 
         encoder = flywheelMotor1.getEncoder();
   }
@@ -42,14 +42,17 @@ public class Flywheel extends PIDSubsystem {
     // Use the output here
     SmartDashboard.putNumber("Flywheel Output", output);
     flywheelMotor1.setVoltage(output);
+    flywheelMotor2.setVoltage(-output);
   }
 
   public void flywheelSpeed(double speed) {
     flywheelMotor1.set(speed);
+    flywheelMotor2.set(-speed);
   }
 
   public void stop() {
     flywheelMotor1.set(0);
+    flywheelMotor2.set(0);
   }
 
   @Override

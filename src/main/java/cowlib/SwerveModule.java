@@ -22,6 +22,7 @@ public class SwerveModule {
 	private PIDController pidController;
 	private CANCoder encoder;
 	private boolean inverted;
+	private double offset;
 
 	public SwerveModule(int angleMotor, int speedMotor, int encoder, boolean drive_inverted) {
 		this.angleMotor = new CANSparkMax(angleMotor, MotorType.kBrushless);
@@ -29,6 +30,7 @@ public class SwerveModule {
 		this.pidController = new PIDController(SwervePID.p, SwervePID.i, SwervePID.d);
 		this.encoder = new CANCoder(encoder);
 		this.inverted = drive_inverted;
+		offset = 0;
 
 		this.pidController.enableContinuousInput(-180, 180);
 	}
@@ -42,7 +44,7 @@ public class SwerveModule {
 	public void drive(double speed, double angle) {
 		speedMotor.setVoltage(speed * (this.inverted ? -1 : 1));
 		// angleMotor.set(MathUtil.clamp(pidController.calculate(encoder.getAbsolutePosition(), angle), -1, 1));
-		angleMotor.setVoltage(1 - (pidController.calculate(this.getEncoder(), angle)));
+		angleMotor.setVoltage(1 - (pidController.calculate(this.getEncoder() + offset, angle + offset)));
 	}
 
 	public void drive(SwerveModuleState state) {
@@ -51,5 +53,13 @@ public class SwerveModule {
 
 	public double getEncoder() {
 		return encoder.getAbsolutePosition();
+	}
+
+	public double getRelativeEncoder() {
+		return encoder.getAbsolutePosition() + offset;
+	}
+
+	public void resetEncoder() {
+		offset = -getEncoder();
 	}
 }

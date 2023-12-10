@@ -56,7 +56,8 @@ public final class Constants {
 		public static final int flywheel1ID = 5;
 		public static final int flywheel2ID = 15;
 		public static final int hoodID = 25;
-		public static final int hoodEncoderID = 1;
+		public static final int hoodEncoderID = 35;
+		public static final double flywheelSetpoint = 0.1;
 
 		public static final class FlywheelPIDs {
 			public static final double p = 0.5;
@@ -76,7 +77,14 @@ public final class Constants {
 		}
 	}
 	public static final class IndexerConstants {
-		public static final int IndexMotorID = 7;
+		public static final int indexMotorID = 6;
+		public static final int indexMotorEncoderID = 2;
+
+		public static final class IndexerPIDs {
+			public static final double p = 0;
+			public static final double i = 0;
+			public static final double d = 0;
+		}
 	}
 	public static final class OperatorConstants {
 		public static final int kDriverControllerPort = 0;
