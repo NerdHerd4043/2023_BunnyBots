@@ -19,6 +19,7 @@ public class ShootBall extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      //Briefly spin indexer
       new WaitCommand(0.1),
       new IndexBall(indexer, flywheel)
     );
