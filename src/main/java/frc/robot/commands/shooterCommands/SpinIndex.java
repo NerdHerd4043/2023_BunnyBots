@@ -4,47 +4,44 @@
 
 package frc.robot.commands.shooterCommands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ShooterConstants;
-import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Indexer;
 
-public class IndexBall extends CommandBase {
+public class SpinIndex extends CommandBase {
   private final Indexer indexer;
-  private final Flywheel flywheel;
-  /** Creates a new IndexBall. */
-  public IndexBall(Indexer indexer, Flywheel flywheel) {
+  private double timerStart;
+
+  /** Creates a new SpinIndex. */
+  public SpinIndex(Indexer indexer) {
     this.indexer = indexer;
-    this.flywheel = flywheel;
+    timerStart = 0;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.indexer, this.flywheel);
+    addRequirements(this.indexer);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    indexer.enable();
-    flywheel.enable();
+    timerStart = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    indexer.flipAtStart();
-    flywheel.setSetpoint(ShooterConstants.flywheelSpeed);
-    indexer.setSetpoint(indexer.getAtStart() ? indexer.getStartPose() + 180 : indexer.getStartPose());
+    indexer.drive(0.7);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    indexer.disable();
+    indexer.drive(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Timer.getFPGATimestamp() - timerStart > 0.1;
   }
 }

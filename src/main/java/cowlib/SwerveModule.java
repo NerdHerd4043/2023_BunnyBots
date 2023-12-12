@@ -44,7 +44,8 @@ public class SwerveModule {
 	public void drive(double speed, double angle) {
 		speedMotor.setVoltage(speed * (this.inverted ? -1 : 1));
 		// angleMotor.set(MathUtil.clamp(pidController.calculate(encoder.getAbsolutePosition(), angle), -1, 1));
-		angleMotor.setVoltage(1 - (pidController.calculate(this.getEncoder() + offset, angle + offset)));
+		// angleMotor.setVoltage(1 - (pidController.calculate(this.getEncoder(), angle)));
+		angleMotor.setVoltage(1 - (pidController.calculate(clamp(this.getEncoder() + offset), angle)));
 	}
 
 	public void drive(SwerveModuleState state) {
@@ -56,10 +57,20 @@ public class SwerveModule {
 	}
 
 	public double getRelativeEncoder() {
-		return encoder.getAbsolutePosition() + offset;
+		return clamp(encoder.getAbsolutePosition() + offset);
 	}
 
 	public void resetEncoder() {
 		offset = -getEncoder();
+	}
+
+	public double clamp(double n) {
+		if(n > 180) {
+			return n - 360;
+		}
+		else if(n < -180) {
+			return 360 + n;
+		}
+		return n;
 	}
 }
