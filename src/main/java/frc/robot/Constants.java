@@ -21,9 +21,9 @@ public final class Constants {
 		public static final int currentLimit = 30;
 
 		public static final class SwervePID {
-			public static final double p = 0.1;
+			public static final double p = 0.11;//0.1;
 			public static final double i = 0;
-			public static final double d = 0.001;
+			public static final double d = 0.0015;//0.001;
 		}
 
 		public static final class SwerveModules {
