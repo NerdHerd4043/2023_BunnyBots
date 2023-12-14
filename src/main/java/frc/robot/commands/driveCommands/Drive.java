@@ -43,10 +43,6 @@ public class Drive extends CommandBase {
     var y = speedY.getAsDouble();
     var r = rot.getAsDouble();
 
-    // SmartDashboard.putNumber("Controller X", x);
-    // SmartDashboard.putNumber("Controller Y", y);
-    // SmartDashboard.putNumber("Controller R", r);
-
     SmartDashboard.putNumber("Yaw", gyro.getYaw());
 
     drivebase.robotOrientedDrive(x, y, r);

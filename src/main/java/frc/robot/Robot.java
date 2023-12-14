@@ -29,7 +29,6 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     m_robotContainer.resetGyro();
-    m_robotContainer.resetEncoders();
   }
 
   /**
@@ -80,7 +79,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    m_robotContainer.resetEncoders(); //DELETE THIS BEFORE COMP!!!!!!!!!!
   }
 
   /** This function is called periodically during operator control. */

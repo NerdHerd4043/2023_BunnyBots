@@ -9,12 +9,14 @@ public class SwerveModuleConfig {
     public final int driveMotorId;
     public final int angleMotorId;
     public final int encoderId;
-    public final boolean drive_inverted; 
+    public final boolean drive_inverted;
+    public final double offset;
 
-    public SwerveModuleConfig(int driveMotorId, int angleMotorId, int encoderId, boolean drive_inverted) {
+    public SwerveModuleConfig(int driveMotorId, int angleMotorId, int encoderId, boolean drive_inverted, double offset) {
         this.driveMotorId = driveMotorId;
         this.angleMotorId = angleMotorId;
         this.encoderId = encoderId;
         this.drive_inverted = drive_inverted;
+        this.offset = offset;
     }
 }

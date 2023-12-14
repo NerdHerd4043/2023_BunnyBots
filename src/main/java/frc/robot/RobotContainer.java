@@ -102,9 +102,9 @@ public class RobotContainer {
     gyro.reset();
   }
 
-  public void resetEncoders() {
-    drivebase.resetEncoders();
-  }
+  // public void resetEncoders() {
+  //   drivebase.resetEncoders();
+  // }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be
@@ -124,7 +124,6 @@ public class RobotContainer {
     driveStick.a().onTrue(new RunCommand(() -> flywheel.flywheelSpeed(1), flywheel));
     driveStick.b().onTrue(new RunCommand(() -> flywheel.flywheelSpeed(0), flywheel));
     driveStick.y().onTrue(new InstantCommand(gyro::reset));
-    driveStick.leftBumper().onTrue(new InstantCommand(drivebase::resetEncoders, drivebase)); //DELETE THIS BEFORE COMP!!!!
     // driveStick.rightBumper().onTrue(new ShootBall(indexer, flywheel));
     // driveStick.a().onTrue(new RunCommand(() -> flywheel.enable(), flywheel));
     // driveStick.a().onTrue(new RunCommand(() -> flywheel.setSetpoint(0.1), flywheel));

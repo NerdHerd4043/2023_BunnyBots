@@ -24,34 +24,26 @@ public class SwerveModule {
 	private boolean inverted;
 	private double offset;
 
-	public SwerveModule(int angleMotor, int speedMotor, int encoder, boolean drive_inverted) {
+	public SwerveModule(int angleMotor, int speedMotor, int encoder, boolean drive_inverted, double offset) {
 		this.angleMotor = new CANSparkMax(angleMotor, MotorType.kBrushless);
 		this.speedMotor = new CANSparkMax(speedMotor, MotorType.kBrushless);
 		this.pidController = new PIDController(SwervePID.p, SwervePID.i, SwervePID.d);
 		this.encoder = new CANCoder(encoder);
 		this.inverted = drive_inverted;
-		offset = 0;
+		this.offset = offset;
 
 		this.pidController.enableContinuousInput(-180, 180);
 	}
 	
 	public SwerveModule(SwerveModuleConfig config, double maxVelocity, double maxVoltage) {
-		this(config.angleMotorId, config.driveMotorId, config.encoderId, config.drive_inverted);
+		this(config.angleMotorId, config.driveMotorId, config.encoderId, config.drive_inverted, config.offset);
 		angleMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
 		speedMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
 	}
 
 	public void drive(double speed, double angle) {
-		var encoder = this.getEncoder();
-		var output = pidController.calculate(-encoder, angle);
 		speedMotor.setVoltage(speed * (this.inverted ? -1 : 1));
-		angleMotor.setVoltage(output);
-		// angleMotor.set(MathUtil.clamp(pidController.calculate(encoder.getAbsolutePosition(), angle), -1, 1));
-		// angleMotor.setVoltage(1 - (pidController.calculate(clamp(this.getEncoder() + offset), angle)));
-		// angleMotor.setVoltage(pidController.calculate(0, 0));
-
-		// System.out.println("Speed: " + Math.round(speed*100)/100.0 +  
-		// ",\tTarget Angle: " + Math.round(angle*100)/100.0);
+		angleMotor.setVoltage(-pidController.calculate(clamp(this.getEncoder() + offset), angle));
 	}
 
 	public void drive(SwerveModuleState state) {
@@ -63,13 +55,13 @@ public class SwerveModule {
 	}
 
 	public double getRelativeEncoder() {
-		return clamp(encoder.getAbsolutePosition() + offset);
+		return clamp(getEncoder() + offset);
 	}
 
-	public void resetEncoder() {
-		offset = -getEncoder();
-		// encoder.configMagnetOffset(offset);
-	}
+	// public void resetEncoder() {
+	// 	offset = -getEncoder();
+	// 	// encoder.configMagnetOffset(offset);
+	// }
 
 	public double clamp(double n) {
 		if(n > 180) {
