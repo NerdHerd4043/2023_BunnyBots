@@ -5,6 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.autoCommands.AutoDrive;
 import frc.robot.commands.driveCommands.Drive;
 import frc.robot.commands.driveCommands.TargetingMode;
 import frc.robot.commands.shooterCommands.ShootBall;
@@ -44,6 +46,8 @@ public class RobotContainer {
   private final Hood hood = new Hood();
   private final Indexer indexer = new Indexer();
 
+  private final AutoDrive auto = new AutoDrive(drivebase, 2);
+
   private final AHRS gyro = new AHRS();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -82,7 +86,7 @@ public class RobotContainer {
     hood.setDefaultCommand(
       new RunCommand(
         () -> hood.adjust(
-          0.5 * (driveStick.getRightTriggerAxis() - driveStick.getLeftTriggerAxis())),
+          0.3 * (driveStick.getRightTriggerAxis() - driveStick.getLeftTriggerAxis())),
           hood)
     );
 
@@ -102,10 +106,6 @@ public class RobotContainer {
     gyro.reset();
   }
 
-  // public void resetEncoders() {
-  //   drivebase.resetEncoders();
-  // }
-
   /**
    * Use this method to define your trigger->command mappings. Triggers can be
    * created via the
@@ -121,10 +121,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driveStick.a().onTrue(new RunCommand(() -> flywheel.flywheelSpeed(1), flywheel));
+    driveStick.a().onTrue(new RunCommand(() -> flywheel.flywheelSpeed(ShooterConstants.flywheelSpeed), flywheel));
     driveStick.b().onTrue(new RunCommand(() -> flywheel.flywheelSpeed(0), flywheel));
-    driveStick.y().onTrue(new InstantCommand(gyro::reset));
-    // driveStick.rightBumper().onTrue(new ShootBall(indexer, flywheel));
+    driveStick.rightBumper().onTrue(new ShootBall(indexer, flywheel));
+    driveStick.pov(0).onTrue(new InstantCommand(gyro::reset));
     // driveStick.a().onTrue(new RunCommand(() -> flywheel.enable(), flywheel));
     // driveStick.a().onTrue(new RunCommand(() -> flywheel.setSetpoint(0.1), flywheel));
     // driveStick.b().onTrue(new RunCommand(() -> flywheel.disable(), flywheel));
@@ -146,6 +146,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return auto;
   }
 }

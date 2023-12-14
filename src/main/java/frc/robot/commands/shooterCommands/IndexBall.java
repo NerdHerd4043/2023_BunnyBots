@@ -25,21 +25,24 @@ public class IndexBall extends CommandBase {
   @Override
   public void initialize() {
     indexer.enable();
-    flywheel.enable();
+    // flywheel.enable();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     indexer.flipAtStart();
-    flywheel.setSetpoint(ShooterConstants.flywheelSpeed);
-    indexer.setSetpoint(indexer.getAtStart() ? indexer.getStartPose() + 180 : indexer.getStartPose());
+    // flywheel.setSetpoint(ShooterConstants.flywheelSpeed);
+    flywheel.flywheelSpeed(ShooterConstants.flywheelSpeed);
+    indexer.setSetpoint(indexer.getAtStart() ? 180 : 0);
+    // indexer.setSetpoint(indexer.getAtStart() ? indexer.getStartPose() + 180 : indexer.getStartPose());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     indexer.disable();
+    flywheel.flywheelSpeed(0);
   }
 
   // Returns true when the command should end.

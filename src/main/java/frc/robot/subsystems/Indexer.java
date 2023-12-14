@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants.IndexerConstants;
 import frc.robot.Constants.IndexerConstants.IndexerPIDs;
@@ -35,6 +36,7 @@ public class Indexer extends PIDSubsystem {
   public void useOutput(double output, double setpoint) {
     // Use the output here
     indexMotor.set(output);
+    SmartDashboard.putNumber("Indexer Encoder", encoder.getAbsolutePosition());
   }
 
   public void drive(double speed) {

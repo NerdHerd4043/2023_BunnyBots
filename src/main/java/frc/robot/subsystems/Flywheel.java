@@ -28,11 +28,8 @@ public class Flywheel extends PIDSubsystem {
 
         flywheelMotor1.restoreFactoryDefaults();
         flywheelMotor2.restoreFactoryDefaults();
-        flywheelMotor1.setIdleMode(IdleMode.kBrake);
-        flywheelMotor2.setIdleMode(IdleMode.kBrake);
-        // flywheelMotor2.follow(flywheelMotor1);
-        // flywheelMotor1.setInverted(false);
-        // flywheelMotor2.setInverted(true);
+        flywheelMotor1.setIdleMode(IdleMode.kCoast);
+        flywheelMotor2.setIdleMode(IdleMode.kCoast);
 
         encoder = flywheelMotor1.getEncoder();
   }
