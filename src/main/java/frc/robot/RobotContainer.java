@@ -86,7 +86,7 @@ public class RobotContainer {
     hood.setDefaultCommand(
       new RunCommand(
         () -> hood.adjust(
-          0.3 * (driveStick.getRightTriggerAxis() - driveStick.getLeftTriggerAxis())),
+          0.4 * (driveStick.getRightTriggerAxis() - driveStick.getLeftTriggerAxis())),
           hood)
     );
 
@@ -123,13 +123,14 @@ public class RobotContainer {
   private void configureBindings() {
     driveStick.a().onTrue(new RunCommand(() -> flywheel.flywheelSpeed(ShooterConstants.flywheelSpeed), flywheel));
     driveStick.b().onTrue(new RunCommand(() -> flywheel.flywheelSpeed(0), flywheel));
-    // driveStick.rightBumper().onTrue(new ShootBall(indexer, flywheel));
+    driveStick.rightBumper().onTrue(new ShootBall(indexer, flywheel));
     driveStick.pov(0).onTrue(new InstantCommand(gyro::reset));
+
     // driveStick.a().onTrue(new RunCommand(() -> flywheel.enable(), flywheel));
     // driveStick.a().onTrue(new RunCommand(() -> flywheel.setSetpoint(0.1), flywheel));
     // driveStick.b().onTrue(new RunCommand(() -> flywheel.disable(), flywheel));
 
-    // driveStick.b().toggleOnTrue(
+    // driveStick.leftBumper().toggleOnTrue(
     // new TargetingMode(
     // drivebase,
     // () -> driveStick.getLeftX(),

@@ -19,28 +19,35 @@ public class Indexer extends PIDSubsystem {
   private final CANSparkMax indexMotor = new CANSparkMax(IndexerConstants.indexMotorID, MotorType.kBrushless);
   private final WPI_CANCoder encoder = new WPI_CANCoder(IndexerConstants.indexMotorEncoderID);
   private final double startPose;
-  private boolean atStart = false;
+  private boolean atStart = true;
 
   /** Creates a new Indexer. */
   public Indexer() {
     super(
       // The PIDController used by the subsystem
       new PIDController(IndexerPIDs.p, IndexerPIDs.i, IndexerPIDs.d));
-
+    
     indexMotor.restoreFactoryDefaults();
     indexMotor.setIdleMode(IdleMode.kBrake);
     startPose = encoder.getAbsolutePosition();
+    getController().enableContinuousInput(0, 360);
   }
 
   @Override
   public void useOutput(double output, double setpoint) {
     // Use the output here
-    indexMotor.set(output);
+    indexMotor.set(-output/2.0);
     SmartDashboard.putNumber("Indexer Encoder", encoder.getAbsolutePosition());
+    SmartDashboard.putNumber("Indexer Output", output);
+    SmartDashboard.putBoolean("At Start Pose", getAtStart());
   }
 
   public void drive(double speed) {
     indexMotor.set(speed);
+  }
+
+  public double getEncoder() {
+    return encoder.getAbsolutePosition();
   }
 
   public double getStartPose() {

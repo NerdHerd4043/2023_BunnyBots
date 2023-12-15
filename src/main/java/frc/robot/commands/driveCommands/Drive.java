@@ -45,8 +45,8 @@ public class Drive extends CommandBase {
 
     SmartDashboard.putNumber("Yaw", gyro.getYaw());
 
-    // drivebase.robotOrientedDrive(x, y, r);
-    drivebase.fieldOrientedDrive(x, y, r, -gyro.getYaw());
+    drivebase.robotOrientedDrive(x, y, r);
+    // drivebase.fieldOrientedDrive(x, y, r, -gyro.getYaw());
   }
 
   // Called once the command ends or is interrupted.
