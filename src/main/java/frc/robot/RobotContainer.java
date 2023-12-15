@@ -78,9 +78,9 @@ public class RobotContainer {
         new Drive(
             drivebase,
             gyro,
-            () -> deadband(driveStick.getLeftY(), DriveConstants.deadband) * drivebase.getMaxVelocity() * 0.75,
-            () -> deadband(driveStick.getLeftX(), DriveConstants.deadband) * drivebase.getMaxVelocity() * 0.75,
-            () -> deadband(-driveStick.getRightX(), DriveConstants.deadband) * drivebase.getMaxAngleVelocity() * 0.75)
+            () -> deadband(-driveStick.getLeftY(), DriveConstants.deadband) * drivebase.getMaxVelocity(),
+            () -> deadband(-driveStick.getLeftX(), DriveConstants.deadband) * drivebase.getMaxVelocity(),
+            () -> deadband(driveStick.getRightX(), DriveConstants.deadband) * drivebase.getMaxAngleVelocity())
             );
 
     hood.setDefaultCommand(
@@ -123,7 +123,7 @@ public class RobotContainer {
   private void configureBindings() {
     driveStick.a().onTrue(new RunCommand(() -> flywheel.flywheelSpeed(ShooterConstants.flywheelSpeed), flywheel));
     driveStick.b().onTrue(new RunCommand(() -> flywheel.flywheelSpeed(0), flywheel));
-    driveStick.rightBumper().onTrue(new ShootBall(indexer, flywheel));
+    // driveStick.rightBumper().onTrue(new ShootBall(indexer, flywheel));
     driveStick.pov(0).onTrue(new InstantCommand(gyro::reset));
     // driveStick.a().onTrue(new RunCommand(() -> flywheel.enable(), flywheel));
     // driveStick.a().onTrue(new RunCommand(() -> flywheel.setSetpoint(0.1), flywheel));

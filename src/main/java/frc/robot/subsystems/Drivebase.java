@@ -53,7 +53,7 @@ public class Drivebase extends SubsystemBase {
 
     SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, MAX_VELOCITY);
 
-    // SmartDashboard.putNumber("FL Target Angle", moduleStates[0].angle.getDegrees());
+    SmartDashboard.putNumber("Target Angle", moduleStates[0].angle.getDegrees());
     // SmartDashboard.putNumber("FR Target Angle", moduleStates[1].angle.getDegrees());
     // SmartDashboard.putNumber("BR Target Angle", moduleStates[2].angle.getDegrees());
     // SmartDashboard.putNumber("BL Target Angle", moduleStates[3].angle.getDegrees());
@@ -85,10 +85,10 @@ public class Drivebase extends SubsystemBase {
     SmartDashboard.putNumber("BR Encoder", backRight.getEncoder());
     SmartDashboard.putNumber("BL Encoder", backLeft.getEncoder());
 
-    SmartDashboard.putNumber("FL Relative Encoder", frontLeft.getRelativeEncoder());
-    SmartDashboard.putNumber("FR Relative Encoder", frontRight.getRelativeEncoder());
-    SmartDashboard.putNumber("BR Relative Encoder", backRight.getRelativeEncoder());
-    SmartDashboard.putNumber("BL Relative Encoder", backLeft.getRelativeEncoder());
+    // SmartDashboard.putNumber("FL Relative Encoder", frontLeft.getRelativeEncoder());
+    // SmartDashboard.putNumber("FR Relative Encoder", frontRight.getRelativeEncoder());
+    // SmartDashboard.putNumber("BR Relative Encoder", backRight.getRelativeEncoder());
+    // SmartDashboard.putNumber("BL Relative Encoder", backLeft.getRelativeEncoder());
     // This method will be called once per scheduler run
   }
 }
