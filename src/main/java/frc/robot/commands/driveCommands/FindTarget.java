@@ -46,7 +46,7 @@ public class FindTarget extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivebase.fieldOrientedDrive(speedX.getAsDouble(), speedY.getAsDouble(), rot.getAsDouble(), gyro.getYaw());
+    drivebase.fieldOrientedDrive(speedX.getAsDouble(), speedY.getAsDouble(), rot.getAsDouble(), -gyro.getYaw());
   }
 
   // Called once the command ends or is interrupted.
@@ -76,7 +76,7 @@ public class FindTarget extends CommandBase {
 
     if(length >= 3){
       Collections.sort(arr);
-      diff1 = Math.abs(arr.get(0)- arr.get(1));
+      diff1 = Math.abs(arr.get(0) - arr.get(1));
       diff2 = Math.abs(arr.get(arr.size() - 2) - arr.get(arr.size() - 1));
       blueAlliance = diff1 > diff2;
 

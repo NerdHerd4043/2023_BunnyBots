@@ -14,7 +14,6 @@ import frc.robot.subsystems.Indexer;
 public class IndexBall extends CommandBase {
   private final Indexer indexer;
   private final Flywheel flywheel;
-  private final double startTime;
   private double setpoint = 0;
   private double timeCheck = 0;
   private boolean firstCheck = true;
@@ -23,7 +22,6 @@ public class IndexBall extends CommandBase {
   public IndexBall(Indexer indexer, Flywheel flywheel) {
     this.indexer = indexer;
     this.flywheel = flywheel;
-    startTime = Timer.getFPGATimestamp();
     
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.indexer, this.flywheel);
@@ -33,8 +31,8 @@ public class IndexBall extends CommandBase {
   @Override
   public void initialize() {
     indexer.flipAtStart();
-    // indexer.getController().enableContinuousInput(0, 360);
     indexer.enable();
+    // indexer.getController().enableContinuousInput(0, 360);
     // flywheel.enable();
   }
 

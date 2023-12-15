@@ -32,7 +32,7 @@ public class TargetPID extends PIDCommand {
         () -> TargetConstants.xCenter,
         // This uses the output
         output -> {
-          drivebase.fieldOrientedDrive(speedX.getAsDouble(), speedY.getAsDouble(), output, gyro.getYaw());
+          drivebase.fieldOrientedDrive(speedX.getAsDouble(), speedY.getAsDouble(), output, -gyro.getYaw());
         });
 
     this.drivebase = drivebase;
