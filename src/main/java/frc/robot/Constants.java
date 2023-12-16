@@ -42,14 +42,15 @@ public final class Constants {
 		}
 
 		public static final class TargetPIDvalues {
-			public static final double p = 0;
+			public static final double p = 0.08;
 			public static final double i = 0;
-			public static final double d = 0;
+			public static final double d = 0.0043;
 		}
 
 		public static final class TargetConstants {
 			public static final double xCenter = 0;
 			public static final int medianFilter = 5;
+			public static boolean targetMode = false;
 		}
 	}
 	public static final class ShooterConstants {
@@ -57,7 +58,7 @@ public final class Constants {
 		public static final int flywheel2ID = 15;
 		public static final int hoodID = 25;
 		public static final int hoodEncoderID = 35;
-		public static final double flywheelSpeed = 1;
+		public static final double flywheelSpeed = 0.7;
 
 		public static final class FlywheelPIDs {
 			public static final double p = 0;
@@ -81,12 +82,13 @@ public final class Constants {
 		public static final int indexMotorEncoderID = 16;
 
 		public static final class IndexerPIDs {
-			public static final double p = 0.0041;//0.003
+			public static final double p = 0.0044;
 			public static final double i = 0;
-			public static final double d = 0.00005;//0.00007;
+			public static final double d = 0.000055;
 		}
 	}
 	public static final class OperatorConstants {
+		public static Boolean onBlueAlliance = false;
 		public static final int kDriverControllerPort = 0;
 	}
 }

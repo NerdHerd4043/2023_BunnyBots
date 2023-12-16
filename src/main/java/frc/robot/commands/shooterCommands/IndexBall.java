@@ -57,7 +57,7 @@ public class IndexBall extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(setpoint - indexer.getEncoder()) < 10) {
+    if(Math.abs(setpoint - indexer.getEncoder()) < 20) {
       if(firstCheck) {
         timeCheck = Timer.getFPGATimestamp();
         firstCheck = !firstCheck;

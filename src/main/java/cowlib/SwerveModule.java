@@ -55,6 +55,10 @@ public class SwerveModule {
 		return encoder.getAbsolutePosition();
 	}
 
+	public double getEncoderRadians() {
+		return encoder.getAbsolutePosition()*2*Math.PI/360.0;
+	}
+
 	public double getRelativeEncoder() {
 		return clamp(getEncoder() + offset);
 	}

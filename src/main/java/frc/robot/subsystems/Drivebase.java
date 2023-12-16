@@ -28,6 +28,11 @@ public class Drivebase extends SubsystemBase {
   private SwerveModule backLeft = new SwerveModule(SwerveModules.backLeft, MAX_VELOCITY, MAX_VOLTAGE);
   private SwerveModule backRight = new SwerveModule(SwerveModules.backRight, MAX_VELOCITY, MAX_VOLTAGE);
 
+  private SwerveModuleState frontLeftOptimised;
+  private SwerveModuleState frontRightOptimised;
+  private SwerveModuleState backLeftOptimised;
+  private SwerveModuleState backRightOptimised;
+
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
     ModuleLocations.frontLeft,
     ModuleLocations.frontRight,
@@ -47,11 +52,21 @@ public class Drivebase extends SubsystemBase {
     ChassisSpeeds speeds = new ChassisSpeeds(speedX, speedY, rot);
     this.drive(speeds);
   }
-
+  
   public void drive(ChassisSpeeds speeds) {
     SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
 
     SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, MAX_VELOCITY);
+
+    frontLeftOptimised = SwerveModuleState.optimize(moduleStates[0], new Rotation2d(frontLeft.getEncoderRadians()));
+    frontRightOptimised = SwerveModuleState.optimize(moduleStates[1], new Rotation2d(frontRight.getEncoderRadians()));
+    backLeftOptimised = SwerveModuleState.optimize(moduleStates[2], new Rotation2d(backLeft.getEncoderRadians()));
+    backRightOptimised = SwerveModuleState.optimize(moduleStates[3], new Rotation2d(backRight.getEncoderRadians()));
+
+    this.frontLeft.drive(frontLeftOptimised);
+    this.frontRight.drive(frontRightOptimised);
+    this.backLeft.drive(backLeftOptimised);
+    this.backRight.drive(backRightOptimised);
 
     SmartDashboard.putNumber("Target Angle", moduleStates[0].angle.getDegrees());
     // SmartDashboard.putNumber("FR Target Angle", moduleStates[1].angle.getDegrees());
@@ -63,10 +78,10 @@ public class Drivebase extends SubsystemBase {
     // SmartDashboard.putNumber("BR Target Speed", moduleStates[2].speedMetersPerSecond);
     // SmartDashboard.putNumber("BL Target Speed", moduleStates[3].speedMetersPerSecond);
 
-    this.frontLeft.drive(moduleStates[0]);
-    this.frontRight.drive(moduleStates[1]);
-    this.backLeft.drive(moduleStates[2]);
-    this.backRight.drive(moduleStates[3]);
+    // this.frontLeft.drive(moduleStates[0]);
+    // this.frontRight.drive(moduleStates[1]);
+    // this.backLeft.drive(moduleStates[2]);
+    // this.backRight.drive(moduleStates[3]);
   }
 
   public double getMaxVelocity() {

@@ -17,12 +17,13 @@ import frc.robot.subsystems.Drivebase;
 public class TargetingMode extends SequentialCommandGroup {
 
   /** Creates a new TargetLock. */
-  public TargetingMode(Drivebase drivebase, AHRS gyro, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot, DoubleSupplier xPose, boolean onBlueAlliance) {
+  public TargetingMode(Drivebase drivebase, AHRS gyro, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot, DoubleSupplier xPose, Boolean onBlueAlliance) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new FindTarget(drivebase, gyro, speedX, speedY, rot, onBlueAlliance),
-      new LockedOn(drivebase, gyro, speedX, speedY, xPose)
+      new TargetPID(drivebase, gyro, speedX, speedY, xPose, onBlueAlliance)
+      // new LockedOn(drivebase, gyro, speedX, speedY, xPose, onBlueAlliance)
     );
   }
 }

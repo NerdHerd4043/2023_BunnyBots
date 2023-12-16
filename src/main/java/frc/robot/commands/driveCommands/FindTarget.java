@@ -14,6 +14,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Drivebase;
 
 public class FindTarget extends CommandBase {
@@ -26,7 +27,7 @@ public class FindTarget extends CommandBase {
   private boolean onBlueAlliance;
 
   /** Creates a new FindTarget. */
-  public FindTarget(Drivebase drivebase, AHRS gyro, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot, boolean onBlueAlliance) {
+  public FindTarget(Drivebase drivebase, AHRS gyro, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot, Boolean onBlueAlliance) {
     this.drivebase = drivebase;
     this.gyro = gyro;
     this.speedX = speedX;
@@ -40,7 +41,7 @@ public class FindTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+    // NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -80,7 +81,7 @@ public class FindTarget extends CommandBase {
       diff2 = Math.abs(arr.get(arr.size() - 2) - arr.get(arr.size() - 1));
       blueAlliance = diff1 > diff2;
 
-      if(blueAlliance != onBlueAlliance){
+      if(blueAlliance != OperatorConstants.onBlueAlliance){
         return true;
       }
     }

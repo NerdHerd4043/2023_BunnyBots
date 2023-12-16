@@ -5,9 +5,13 @@
 package frc.robot;
 
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.DriveConstants.TargetConstants;
 import frc.robot.commands.autoCommands.AutoDrive;
+import frc.robot.commands.autoCommands.AutoShoot;
 import frc.robot.commands.driveCommands.Drive;
+import frc.robot.commands.driveCommands.ToggleLimelight;
 import frc.robot.commands.driveCommands.TargetingMode;
 import frc.robot.commands.shooterCommands.ShootBall;
 import frc.robot.subsystems.Drivebase;
@@ -19,10 +23,14 @@ import java.util.function.DoubleSupplier;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -46,42 +54,67 @@ public class RobotContainer {
   private final Hood hood = new Hood();
   private final Indexer indexer = new Indexer();
 
-  private final AutoDrive auto = new AutoDrive(drivebase, 2);
-
   private final AHRS gyro = new AHRS();
+  
+  // private Boolean onBlueAlliance = DriverStation.getAlliance() == Alliance.Blue;
+
+  SendableChooser<Boolean> alliance = new SendableChooser<>();
+  private boolean blue = true;
+  private boolean red = false;
+  
+  private final AutoDrive autoDrive = new AutoDrive(drivebase, gyro, 0.5, 2);
+  private final AutoShoot autoShoot = new AutoShoot(drivebase, gyro, indexer, flywheel, OperatorConstants.onBlueAlliance);
+  SendableChooser<Command> commandChooser = new SendableChooser<>();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private static CommandXboxController driveStick = new CommandXboxController(0);
 
   private MedianFilter filter = new MedianFilter(DriveConstants.TargetConstants.medianFilter);
 
-  SendableChooser<Boolean> alliance = new SendableChooser<>();
-  private boolean blue = true;
-  private boolean red = false;
+  
+  NetworkTable limelightTable =
+  NetworkTableInstance.getDefault().getTable("limelight");
 
-  // NetworkTable limelightTable =
-  // NetworkTableInstance.getDefault().getTable("limelight");
-
-  // private final DoubleSupplier xPose =
-  // () -> filter.calculate(limelightTable.getEntry("tx").getDouble(0));
+  
+  private final DoubleSupplier xPose =
+  () -> filter.calculate(limelightTable.getEntry("tx").getDouble(0));
   // private final DoubleSupplier distance =
   // () -> filter.calculate(limelightTable.getEntry("ta").getDouble(0));
-
+  
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     alliance.addOption("Blue Alliance", blue);
     alliance.addOption("Red Alliance", red);
+    commandChooser.addOption("Simple Drive", autoDrive);
+    commandChooser.addOption("Drive and Shoot", autoShoot);
 
-    drivebase.setDefaultCommand(
-        new Drive(
-            drivebase,
-            gyro,
-            () -> deadband(-driveStick.getLeftY(), DriveConstants.deadband) * drivebase.getMaxVelocity(),
-            () -> deadband(-driveStick.getLeftX(), DriveConstants.deadband) * drivebase.getMaxVelocity(),
-            () -> deadband(driveStick.getRightX(), DriveConstants.deadband) * drivebase.getMaxAngleVelocity())
-            );
+    SmartDashboard.putData("Alliance", alliance);
+    SmartDashboard.putData("Autos", commandChooser);
+  
+    // if(!TargetConstants.targetMode) {
+    //   drivebase.setDefaultCommand(
+    //       new Drive(
+    //           drivebase,
+    //           gyro,
+    //           () -> deadband(-driveStick.getLeftY(), DriveConstants.deadband) * drivebase.getMaxVelocity(),
+    //           () -> deadband(-driveStick.getLeftX(), DriveConstants.deadband) * drivebase.getMaxVelocity(),
+    //           () -> deadband(driveStick.getRightX(), DriveConstants.deadband) * drivebase.getMaxAngleVelocity())
+    //           );
+    // }
+    // else {
+      drivebase.setDefaultCommand(
+        new TargetingMode(
+          drivebase,
+          gyro,
+          () -> deadband(-driveStick.getLeftY(), DriveConstants.deadband) * drivebase.getMaxVelocity(),
+          () -> deadband(-driveStick.getLeftX(), DriveConstants.deadband) * drivebase.getMaxVelocity(),
+          () -> deadband(driveStick.getRightX(), DriveConstants.deadband) * drivebase.getMaxAngleVelocity(),
+          xPose,
+          OperatorConstants.onBlueAlliance)
+          );
+    // }
 
     hood.setDefaultCommand(
       new RunCommand(
@@ -106,6 +139,14 @@ public class RobotContainer {
     gyro.reset();
   }
 
+  public void updateAlliance() {
+    OperatorConstants.onBlueAlliance = DriverStation.getAlliance() == Alliance.Blue;
+  }
+
+  // public boolean getAlliance() {
+  //   return onBlueAlliance;
+  // }
+
   /**
    * Use this method to define your trigger->command mappings. Triggers can be
    * created via the
@@ -125,19 +166,7 @@ public class RobotContainer {
     driveStick.b().onTrue(new RunCommand(() -> flywheel.flywheelSpeed(0), flywheel));
     driveStick.rightBumper().onTrue(new ShootBall(indexer, flywheel));
     driveStick.pov(0).onTrue(new InstantCommand(gyro::reset));
-
-    // driveStick.a().onTrue(new RunCommand(() -> flywheel.enable(), flywheel));
-    // driveStick.a().onTrue(new RunCommand(() -> flywheel.setSetpoint(0.1), flywheel));
-    // driveStick.b().onTrue(new RunCommand(() -> flywheel.disable(), flywheel));
-
-    // driveStick.leftBumper().toggleOnTrue(
-    // new TargetingMode(
-    // drivebase,
-    // () -> driveStick.getLeftX(),
-    // () -> driveStick.getLeftY(),
-    // () -> driveStick.getRightX(),
-    // xPose,
-    // alliance.getSelected()));
+    driveStick.leftBumper().onTrue(new ToggleLimelight());
   }
 
   /**
@@ -147,6 +176,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return auto;
+    return commandChooser.getSelected();
   }
 }
