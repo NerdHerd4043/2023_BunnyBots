@@ -27,10 +27,9 @@ public class TargetPID extends PIDCommand {
 
   private final Drivebase drivebase;
   private final AHRS gyro;
-  private final boolean onBlueAlliance;
 
   /** Creates a new TargetPID. */
-  public TargetPID(Drivebase drivebase, AHRS gyro, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier xPose, Boolean onBlueAlliance) {
+  public TargetPID(Drivebase drivebase, AHRS gyro, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier xPose) {
     super(
         // The controller that the command will use
         new PIDController(TargetPIDvalues.p, TargetPIDvalues.i, TargetPIDvalues.d),
@@ -41,10 +40,10 @@ public class TargetPID extends PIDCommand {
         // This uses the output
         output -> {
           SmartDashboard.putNumber("Target PID Output", output);
+          SmartDashboard.putNumber("Yaw", gyro.getYaw());
           drivebase.fieldOrientedDrive(speedX.getAsDouble(), speedY.getAsDouble(), -output/8.0, -gyro.getYaw());
         });
 
-    this.onBlueAlliance = onBlueAlliance;
     this.drivebase = drivebase;
     this.gyro = gyro;
     // Use addRequirements() here to declare subsystem dependencies.

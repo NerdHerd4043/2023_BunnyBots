@@ -23,7 +23,6 @@ import java.util.function.DoubleSupplier;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -56,14 +55,8 @@ public class RobotContainer {
 
   private final AHRS gyro = new AHRS();
   
-  // private Boolean onBlueAlliance = DriverStation.getAlliance() == Alliance.Blue;
-
-  SendableChooser<Boolean> alliance = new SendableChooser<>();
-  private boolean blue = true;
-  private boolean red = false;
-  
   private final AutoDrive autoDrive = new AutoDrive(drivebase, gyro, 0.5, 2);
-  private final AutoShoot autoShoot = new AutoShoot(drivebase, gyro, indexer, flywheel, OperatorConstants.onBlueAlliance);
+  private final AutoShoot autoShoot = new AutoShoot(drivebase, gyro, indexer, flywheel);
   SendableChooser<Command> commandChooser = new SendableChooser<>();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -78,43 +71,25 @@ public class RobotContainer {
   
   private final DoubleSupplier xPose =
   () -> filter.calculate(limelightTable.getEntry("tx").getDouble(0));
-  // private final DoubleSupplier distance =
-  // () -> filter.calculate(limelightTable.getEntry("ta").getDouble(0));
   
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    alliance.addOption("Blue Alliance", blue);
-    alliance.addOption("Red Alliance", red);
     commandChooser.addOption("Simple Drive", autoDrive);
     commandChooser.addOption("Drive and Shoot", autoShoot);
 
-    SmartDashboard.putData("Alliance", alliance);
     SmartDashboard.putData("Autos", commandChooser);
   
-    // if(!TargetConstants.targetMode) {
-    //   drivebase.setDefaultCommand(
-    //       new Drive(
-    //           drivebase,
-    //           gyro,
-    //           () -> deadband(-driveStick.getLeftY(), DriveConstants.deadband) * drivebase.getMaxVelocity(),
-    //           () -> deadband(-driveStick.getLeftX(), DriveConstants.deadband) * drivebase.getMaxVelocity(),
-    //           () -> deadband(driveStick.getRightX(), DriveConstants.deadband) * drivebase.getMaxAngleVelocity())
-    //           );
-    // }
-    // else {
-      drivebase.setDefaultCommand(
-        new TargetingMode(
-          drivebase,
-          gyro,
-          () -> deadband(-driveStick.getLeftY(), DriveConstants.deadband) * drivebase.getMaxVelocity(),
-          () -> deadband(-driveStick.getLeftX(), DriveConstants.deadband) * drivebase.getMaxVelocity(),
-          () -> deadband(driveStick.getRightX(), DriveConstants.deadband) * drivebase.getMaxAngleVelocity(),
-          xPose,
-          OperatorConstants.onBlueAlliance)
-          );
-    // }
+    drivebase.setDefaultCommand(
+      new TargetingMode(
+        drivebase,
+        gyro,
+        () -> deadband(-driveStick.getLeftY(), DriveConstants.deadband) * drivebase.getMaxVelocity(),
+        () -> deadband(-driveStick.getLeftX(), DriveConstants.deadband) * drivebase.getMaxVelocity(),
+        () -> deadband(driveStick.getRightX(), DriveConstants.deadband) * drivebase.getMaxAngleVelocity(),
+        xPose)
+        );
 
     hood.setDefaultCommand(
       new RunCommand(
@@ -142,10 +117,6 @@ public class RobotContainer {
   public void updateAlliance() {
     OperatorConstants.onBlueAlliance = DriverStation.getAlliance() == Alliance.Blue;
   }
-
-  // public boolean getAlliance() {
-  //   return onBlueAlliance;
-  // }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be

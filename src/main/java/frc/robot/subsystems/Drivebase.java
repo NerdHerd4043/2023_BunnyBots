@@ -77,11 +77,6 @@ public class Drivebase extends SubsystemBase {
     // SmartDashboard.putNumber("FR Target Speed", moduleStates[1].speedMetersPerSecond);
     // SmartDashboard.putNumber("BR Target Speed", moduleStates[2].speedMetersPerSecond);
     // SmartDashboard.putNumber("BL Target Speed", moduleStates[3].speedMetersPerSecond);
-
-    // this.frontLeft.drive(moduleStates[0]);
-    // this.frontRight.drive(moduleStates[1]);
-    // this.backLeft.drive(moduleStates[2]);
-    // this.backRight.drive(moduleStates[3]);
   }
 
   public double getMaxVelocity() {

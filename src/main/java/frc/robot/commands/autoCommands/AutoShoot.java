@@ -20,13 +20,13 @@ import frc.robot.subsystems.Indexer;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoShoot extends SequentialCommandGroup {
   /** Creates a new AutoShoot. */
-  public AutoShoot(Drivebase drivebase, AHRS gyro, Indexer indexer, Flywheel flywheel, Boolean onBlueAlliance) {
+  public AutoShoot(Drivebase drivebase, AHRS gyro, Indexer indexer, Flywheel flywheel) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new AutoDrive(drivebase, gyro, 1, 4),
       new ToggleLimelight(),
-      new FindTarget(drivebase, gyro, () -> 0, () -> 0, () -> 0, onBlueAlliance),
+      new FindTarget(drivebase, gyro, () -> 0, () -> 0, () -> 0),
       new ShootBall(indexer, flywheel),
       new WaitCommand(1),
       new ShootBall(indexer, flywheel),
