@@ -88,8 +88,7 @@ public class RobotContainer {
         () -> deadband(-driveStick.getLeftY(), DriveConstants.deadband) * drivebase.getMaxVelocity() * 1.7,
         () -> deadband(-driveStick.getLeftX(), DriveConstants.deadband) * drivebase.getMaxVelocity() * 1.7,
         () -> deadband(driveStick.getRightX(), DriveConstants.deadband) * drivebase.getMaxAngleVelocity(),
-        xPose,
-        OperatorConstants.onBlueAlliance)
+        xPose)
         );
 
     hood.setDefaultCommand(
