@@ -39,7 +39,7 @@ public class Indexer extends PIDSubsystem {
     indexMotor.set(-output/2.0);
     SmartDashboard.putNumber("Indexer Encoder", encoder.getAbsolutePosition());
     SmartDashboard.putNumber("Indexer Output", output);
-    SmartDashboard.putBoolean("At Start Pose", getAtStart());
+    // SmartDashboard.putBoolean("At Start Pose", getAtStart());
   }
 
   public void drive(double speed) {
