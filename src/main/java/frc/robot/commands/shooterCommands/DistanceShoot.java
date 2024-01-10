@@ -6,11 +6,11 @@ package frc.robot.commands.shooterCommands;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hood;
 
-public class DistanceShoot extends CommandBase {
+public class DistanceShoot extends Command {
   // private final Shooter shooter;
   private final Hood hood;
   private final Flywheel flywheel;

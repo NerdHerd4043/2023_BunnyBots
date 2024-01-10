@@ -7,10 +7,10 @@ package frc.robot.commands.autoCommands;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivebase;
 
-public class AutoDrive extends CommandBase {
+public class AutoDrive extends Command {
   private final Drivebase drivebase;
   private final AHRS gyro;
   private final double speed;

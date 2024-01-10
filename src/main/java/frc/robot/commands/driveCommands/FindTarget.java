@@ -14,11 +14,11 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Drivebase;
 
-public class FindTarget extends CommandBase {
+public class FindTarget extends Command {
 
   private Drivebase drivebase;
   private final AHRS gyro;

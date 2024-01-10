@@ -115,7 +115,10 @@ public class RobotContainer {
   }
 
   public void updateAlliance() {
-    OperatorConstants.onBlueAlliance = DriverStation.getAlliance() == Alliance.Blue;
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent()) {
+      OperatorConstants.onBlueAlliance = alliance.get() == Alliance.Blue;
+    }
   }
 
   /**

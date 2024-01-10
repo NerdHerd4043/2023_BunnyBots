@@ -5,10 +5,10 @@
 package frc.robot.commands.shooterCommands;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Indexer;
 
-public class SpinIndex extends CommandBase {
+public class SpinIndex extends Command {
   private final Indexer indexer;
   private double timerStart;
 
