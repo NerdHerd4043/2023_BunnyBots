@@ -54,7 +54,7 @@ public class RobotContainer {
   private final Indexer indexer = new Indexer();
 
   private final AHRS gyro = new AHRS();
-  
+
   private final AutoDrive autoDrive = new AutoDrive(drivebase, gyro, 0.5, 2);
   private final AutoShoot autoShoot = new AutoShoot(drivebase, gyro, indexer, flywheel);
   SendableChooser<Command> commandChooser = new SendableChooser<>();
@@ -64,14 +64,10 @@ public class RobotContainer {
 
   private MedianFilter filter = new MedianFilter(DriveConstants.TargetConstants.medianFilter);
 
-  
-  NetworkTable limelightTable =
-  NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
-  
-  private final DoubleSupplier xPose =
-  () -> filter.calculate(limelightTable.getEntry("tx").getDouble(0));
-  
+  private final DoubleSupplier xPose = () -> filter.calculate(limelightTable.getEntry("tx").getDouble(0));
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -80,23 +76,21 @@ public class RobotContainer {
     commandChooser.addOption("Drive and Shoot", autoShoot);
 
     SmartDashboard.putData("Autos", commandChooser);
-  
+
     drivebase.setDefaultCommand(
-      new TargetingMode(
-        drivebase,
-        gyro,
-        () -> deadband(-driveStick.getLeftY(), DriveConstants.deadband) * drivebase.getMaxVelocity() * 1.7,
-        () -> deadband(-driveStick.getLeftX(), DriveConstants.deadband) * drivebase.getMaxVelocity() * 1.7,
-        () -> deadband(driveStick.getRightX(), DriveConstants.deadband) * drivebase.getMaxAngleVelocity(),
-        xPose)
-        );
+        new TargetingMode(
+            drivebase,
+            gyro,
+            () -> deadband(-driveStick.getLeftY(), DriveConstants.deadband) * drivebase.getMaxVelocity() * 1.7,
+            () -> deadband(-driveStick.getLeftX(), DriveConstants.deadband) * drivebase.getMaxVelocity() * 1.7,
+            () -> deadband(driveStick.getRightX(), DriveConstants.deadband) * drivebase.getMaxAngleVelocity(),
+            xPose));
 
     hood.setDefaultCommand(
-      new RunCommand(
-        () -> hood.adjust(
-          0.4 * (driveStick.getRightTriggerAxis() - driveStick.getLeftTriggerAxis())),
-          hood)
-    );
+        new RunCommand(
+            () -> hood.adjust(
+                0.4 * (driveStick.getRightTriggerAxis() - driveStick.getLeftTriggerAxis())),
+            hood));
 
     // Configure the trigger bindings
     configureBindings();

@@ -28,21 +28,16 @@ public class Drivebase extends SubsystemBase {
   private SwerveModule backLeft = new SwerveModule(SwerveModules.backLeft, MAX_VELOCITY, MAX_VOLTAGE);
   private SwerveModule backRight = new SwerveModule(SwerveModules.backRight, MAX_VELOCITY, MAX_VOLTAGE);
 
-  private SwerveModuleState frontLeftOptimised;
-  private SwerveModuleState frontRightOptimised;
-  private SwerveModuleState backLeftOptimised;
-  private SwerveModuleState backRightOptimised;
-
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-    ModuleLocations.frontLeft,
-    ModuleLocations.frontRight,
-    ModuleLocations.backLeft,
-    ModuleLocations.backRight
-  );
+      ModuleLocations.frontLeft,
+      ModuleLocations.frontRight,
+      ModuleLocations.backLeft,
+      ModuleLocations.backRight);
 
   /** Creates a new Drivebase. */
-  public Drivebase() {}
-  
+  public Drivebase() {
+  }
+
   public void fieldOrientedDrive(double speedX, double speedY, double rot, double angle) {
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speedX, speedY, rot, Rotation2d.fromDegrees(angle));
     this.drive(speeds);
@@ -52,31 +47,34 @@ public class Drivebase extends SubsystemBase {
     ChassisSpeeds speeds = new ChassisSpeeds(speedX, speedY, rot);
     this.drive(speeds);
   }
-  
+
   public void drive(ChassisSpeeds speeds) {
     SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
 
     SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, MAX_VELOCITY + 10);
     // SmartDashboard.putNumber("MaxVelocity", MAX_VELOCITY);
-    frontLeftOptimised = SwerveModuleState.optimize(moduleStates[0], new Rotation2d(frontLeft.getEncoderRadians()));
-    frontRightOptimised = SwerveModuleState.optimize(moduleStates[1], new Rotation2d(frontRight.getEncoderRadians()));
-    backLeftOptimised = SwerveModuleState.optimize(moduleStates[2], new Rotation2d(backLeft.getEncoderRadians()));
-    backRightOptimised = SwerveModuleState.optimize(moduleStates[3], new Rotation2d(backRight.getEncoderRadians()));
 
-    this.frontLeft.drive(frontLeftOptimised);
-    this.frontRight.drive(frontRightOptimised);
-    this.backLeft.drive(backLeftOptimised);
-    this.backRight.drive(backRightOptimised);
+    this.frontLeft.drive(moduleStates[0]);
+    this.frontRight.drive(moduleStates[1]);
+    this.backLeft.drive(moduleStates[2]);
+    this.backRight.drive(moduleStates[3]);
 
     SmartDashboard.putNumber("Target Angle", moduleStates[0].angle.getDegrees());
-    // SmartDashboard.putNumber("FR Target Angle", moduleStates[1].angle.getDegrees());
-    // SmartDashboard.putNumber("BR Target Angle", moduleStates[2].angle.getDegrees());
-    // SmartDashboard.putNumber("BL Target Angle", moduleStates[3].angle.getDegrees());
+    // SmartDashboard.putNumber("FR Target Angle",
+    // moduleStates[1].angle.getDegrees());
+    // SmartDashboard.putNumber("BR Target Angle",
+    // moduleStates[2].angle.getDegrees());
+    // SmartDashboard.putNumber("BL Target Angle",
+    // moduleStates[3].angle.getDegrees());
 
-    // SmartDashboard.putNumber("FL Target Speed", moduleStates[0].speedMetersPerSecond);
-    // SmartDashboard.putNumber("FR Target Speed", moduleStates[1].speedMetersPerSecond);
-    // SmartDashboard.putNumber("BR Target Speed", moduleStates[2].speedMetersPerSecond);
-    // SmartDashboard.putNumber("BL Target Speed", moduleStates[3].speedMetersPerSecond);
+    // SmartDashboard.putNumber("FL Target Speed",
+    // moduleStates[0].speedMetersPerSecond);
+    // SmartDashboard.putNumber("FR Target Speed",
+    // moduleStates[1].speedMetersPerSecond);
+    // SmartDashboard.putNumber("BR Target Speed",
+    // moduleStates[2].speedMetersPerSecond);
+    // SmartDashboard.putNumber("BL Target Speed",
+    // moduleStates[3].speedMetersPerSecond);
   }
 
   public double getMaxVelocity() {
@@ -87,7 +85,6 @@ public class Drivebase extends SubsystemBase {
     return MAX_ANGULAR_VELOCITY;
   }
 
-
   @Override
   public void periodic() {
     SmartDashboard.putNumber("FL Encoder", frontLeft.getEncoder());
@@ -95,10 +92,14 @@ public class Drivebase extends SubsystemBase {
     SmartDashboard.putNumber("BR Encoder", backRight.getEncoder());
     SmartDashboard.putNumber("BL Encoder", backLeft.getEncoder());
 
-    // SmartDashboard.putNumber("FL Relative Encoder", frontLeft.getRelativeEncoder());
-    // SmartDashboard.putNumber("FR Relative Encoder", frontRight.getRelativeEncoder());
-    // SmartDashboard.putNumber("BR Relative Encoder", backRight.getRelativeEncoder());
-    // SmartDashboard.putNumber("BL Relative Encoder", backLeft.getRelativeEncoder());
+    // SmartDashboard.putNumber("FL Relative Encoder",
+    // frontLeft.getRelativeEncoder());
+    // SmartDashboard.putNumber("FR Relative Encoder",
+    // frontRight.getRelativeEncoder());
+    // SmartDashboard.putNumber("BR Relative Encoder",
+    // backRight.getRelativeEncoder());
+    // SmartDashboard.putNumber("BL Relative Encoder",
+    // backLeft.getRelativeEncoder());
     // This method will be called once per scheduler run
   }
 }
