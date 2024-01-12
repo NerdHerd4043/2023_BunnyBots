@@ -7,7 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,7 +16,8 @@ import frc.robot.Constants.IndexerConstants;
 import frc.robot.Constants.IndexerConstants.IndexerPIDs;
 
 public class Indexer extends PIDSubsystem {
-  private final CANSparkMax indexMotor = new CANSparkMax(IndexerConstants.indexMotorID, MotorType.kBrushless);
+  private final CANSparkMax indexMotor = new CANSparkMax(IndexerConstants.indexMotorID,
+      MotorType.kBrushless);
   private final WPI_CANCoder encoder = new WPI_CANCoder(IndexerConstants.indexMotorEncoderID);
   private final double startPose;
   private boolean atStart = true;
@@ -24,9 +25,9 @@ public class Indexer extends PIDSubsystem {
   /** Creates a new Indexer. */
   public Indexer() {
     super(
-      // The PIDController used by the subsystem
-      new PIDController(IndexerPIDs.p, IndexerPIDs.i, IndexerPIDs.d));
-    
+        // The PIDController used by the subsystem
+        new PIDController(IndexerPIDs.p, IndexerPIDs.i, IndexerPIDs.d));
+
     indexMotor.restoreFactoryDefaults();
     indexMotor.setIdleMode(IdleMode.kBrake);
     startPose = encoder.getAbsolutePosition();
@@ -36,7 +37,7 @@ public class Indexer extends PIDSubsystem {
   @Override
   public void useOutput(double output, double setpoint) {
     // Use the output here
-    indexMotor.set(-output/2.0);
+    indexMotor.set(-output / 2.0);
     SmartDashboard.putNumber("Indexer Encoder", encoder.getAbsolutePosition());
     SmartDashboard.putNumber("Indexer Output", output);
     // SmartDashboard.putBoolean("At Start Pose", getAtStart());
