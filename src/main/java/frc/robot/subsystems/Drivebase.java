@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import cowlib.SwerveModule;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -55,9 +56,10 @@ public class Drivebase extends SubsystemBase {
   
   public void drive(ChassisSpeeds speeds) {
     SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
+    // SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds, new Translation2d(-0.1016,0));
 
     SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, MAX_VELOCITY + 10);
-    // SmartDashboard.putNumber("MaxVelocity", MAX_VELOCITY);
+    SmartDashboard.putNumber("MaxVelocity", MAX_VELOCITY);
     frontLeftOptimised = SwerveModuleState.optimize(moduleStates[0], new Rotation2d(frontLeft.getEncoderRadians()));
     frontRightOptimised = SwerveModuleState.optimize(moduleStates[1], new Rotation2d(frontRight.getEncoderRadians()));
     backLeftOptimised = SwerveModuleState.optimize(moduleStates[2], new Rotation2d(backLeft.getEncoderRadians()));
