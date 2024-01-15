@@ -55,11 +55,11 @@ public class Drivebase extends SubsystemBase {
   }
   
   public void drive(ChassisSpeeds speeds) {
-    SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
-    // SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds, new Translation2d(-0.1016,0));
+    // SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
+    SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds, new Translation2d(0, -4));
 
-    SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, MAX_VELOCITY + 10);
-    SmartDashboard.putNumber("MaxVelocity", MAX_VELOCITY);
+    SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, MAX_VELOCITY + 30);
+    // SmartDashboard.putNumber("MaxVelocity", MAX_VELOCITY);
     frontLeftOptimised = SwerveModuleState.optimize(moduleStates[0], new Rotation2d(frontLeft.getEncoderRadians()));
     frontRightOptimised = SwerveModuleState.optimize(moduleStates[1], new Rotation2d(frontRight.getEncoderRadians()));
     backLeftOptimised = SwerveModuleState.optimize(moduleStates[2], new Rotation2d(backLeft.getEncoderRadians()));
