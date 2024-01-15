@@ -17,7 +17,7 @@ import frc.robot.Constants.IndexerConstants.IndexerPIDs;
 
 public class Indexer extends PIDSubsystem {
   private final CANSparkMax indexMotor = new CANSparkMax(IndexerConstants.indexMotorID, MotorType.kBrushless);
-  private final WPI_CANCoder encoder = new WPI_CANCoder(IndexerConstants.indexMotorEncoderID);
+  private final WPI_CANCoder encoder = new WPI_CANCoder(IndexerConstants.indexMotorEncoderID); 
   private final double startPose;
   private boolean atStart = true;
 
@@ -28,7 +28,7 @@ public class Indexer extends PIDSubsystem {
       new PIDController(IndexerPIDs.p, IndexerPIDs.i, IndexerPIDs.d));
     
     indexMotor.restoreFactoryDefaults();
-    indexMotor.setIdleMode(IdleMode.kBrake);
+    // indexMotor.setIdleMode(IdleMode.kBrake);
     startPose = encoder.getAbsolutePosition();
     getController().enableContinuousInput(0, 360);
   }
