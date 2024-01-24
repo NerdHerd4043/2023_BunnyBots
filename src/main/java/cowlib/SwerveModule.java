@@ -23,28 +23,33 @@ public class SwerveModule {
 	private CANCoder encoder;
 	private boolean inverted;
 	private double offset;
+  private double maxVoltage;
+  private double maxVelocity;
 
-	public SwerveModule(int angleMotor, int speedMotor, int encoder, boolean drive_inverted, double offset) {
+	public SwerveModule(int angleMotor, int speedMotor, int encoder, boolean drive_inverted, double offset, double maxVelocity, double maxVoltage) {
 		this.angleMotor = new CANSparkMax(angleMotor, MotorType.kBrushless);
 		this.speedMotor = new CANSparkMax(speedMotor, MotorType.kBrushless);
 		this.pidController = new PIDController(SwervePID.p, SwervePID.i, SwervePID.d);
 		this.encoder = new CANCoder(encoder);
 		this.inverted = drive_inverted;
 		this.offset = offset;
+    this.maxVelocity = maxVelocity;
+    this.maxVoltage = maxVoltage;
 
 		this.pidController.enableContinuousInput(-180, 180);
 	}
 	
 	public SwerveModule(SwerveModuleConfig config, double maxVelocity, double maxVoltage) {
-		this(config.angleMotorId, config.driveMotorId, config.encoderId, config.drive_inverted, config.offset);
+		this(config.angleMotorId, config.driveMotorId, config.encoderId, config.drive_inverted, config.offset, maxVelocity, maxVoltage);
 		angleMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
 		speedMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
 	}
 
-	public void drive(double speed, double angle) {
-		speedMotor.setVoltage(speed * (this.inverted ? -1 : 1));
+	public void drive(double speedMetersPerSecond, double angle) {
+    var voltage = (speedMetersPerSecond / maxVelocity) * maxVoltage;
+		speedMotor.setVoltage(voltage * (this.inverted ? -1 : 1));
 		angleMotor.setVoltage(-pidController.calculate(this.getEncoder(), angle));
-		System.out.println(speed);
+		// System.out.println(speed);
 		// angleMotor.setVoltage(-pidController.calculate(clamp(this.getEncoder() + offset), angle));
 	}
 
